@@ -29,11 +29,11 @@ Function xflowCompile
       Permite hacer cmake, compilar y generar el deploy para el repositorio de xflow
     
     .EXAMPLE 
-      fmkInit
+      xflowCompile
     .EXAMPLE 
-      fmkInit cmake / fmkInit compile / fmkInit deploy
+      xflowCompile cmake / xflowCompile compile / xflowCompile deploy
     .EXAMPLE 
-      fmkInit full
+      xflowCompile full
     #> 
 
   Param( [ValidateSet("cmake","compile","deploy", "full")][string] $action = "default" ) 
