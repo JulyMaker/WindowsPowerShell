@@ -44,10 +44,10 @@ Function xflowCompile
 
   switch($action)
   {
-    "cmake"   { ./cmake_xflow.bat }
+    "cmake"   { ./cmake_xflow2.bat }
     "compile" { ./compile_xflow.bat }
     "deploy"  { ./deploy_xflow.bat }
-    "full"    { ./cmake_xflow.bat; ./compile_xflow.bat; ./deploy_xflow.bat}
+    "full"    { ./cmake_xflow2.bat; ./compile_xflow.bat; ./deploy_xflow.bat}
     default   {}
   }
 
@@ -119,4 +119,19 @@ Function traduccion
   cd $actual
 }
 
-Export-ModuleMember -function conanenvironment, gui, xflowCompile, fmkInit, traduccion
+Function papyrus
+{
+  <#
+    .SYNOPSIS
+      Abre papyrus para leer el repo
+    .DESCRIPTION 
+      Abre papyrus para leer el repo
+    
+    .EXAMPLE 
+      papyrus
+    #> 
+
+  &"E:\papyrus\Papyrus\papyrus.exe" -vm "$env:ProgramFiles\Java\jdk-17\bin\server\jvm.dll" -i "E:\papyrus\papyrus-data-model-master"
+}
+
+Export-ModuleMember -function conanenvironment, gui, xflowCompile, fmkInit, traduccion, papyrus

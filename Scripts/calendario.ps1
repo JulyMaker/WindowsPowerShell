@@ -77,11 +77,13 @@ if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27}
     $fiestasFichero = $profileDir+"\vacaciones\fiestas.txt"
 	$vacacionesFichero = $profileDir+"\vacaciones\vacaciones.txt"
 	$fechasSenaladasFichero = $profileDir+"\vacaciones\fechasSenaladas.txt"
+	$cumplesFichero = $profileDir+"\vacaciones\cumples.txt"
 
     $vacaciones    = fillHollidaysArray $vacacionesFichero $YearNumber
     $pendientes    = fillHollidaysArray $pendientesFichero $YearNumber
     $fiestas       = fillHollidaysArray $fiestasFichero $YearNumber
     $diasSenalados = fillHollidaysArray $fechasSenaladasFichero $YearNumber
+    $cumples       = fillHollidaysArray $cumplesFichero $YearNumber
 
     ForEach( $item in $vacaciones)
     {
@@ -89,7 +91,7 @@ if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27}
     }
 
     $vacacionesAnteriores    = fillHollidaysArray $vacacionesFichero ($YearNumber-1)
-	ForEach( $item in $vacacionesAnteriores)
+	  ForEach( $item in $vacacionesAnteriores)
     {
     	$cogidosanterior += $item.Count
     }
@@ -135,9 +137,10 @@ if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27}
 		     if($_.WorkDay -eq $true){ $_.DayColor = 'White'}else{$_.DayColor = 'Red'}
 		     if($isDiasSenalados -AND $diasSenalados -AND ($diasSenalados[$count] -contains $_.Day)){ $_.DayColor = 'Yellow'}
 		     if($isVacaciones -AND $vacaciones -AND ($vacaciones[$count] -contains $_.Day )) {$_.DayColor = 'Green'}
-		     if($isVacaciones -AND $pendientes -AND ($pendientes[$count] -contains $_.Day)){ $_.DayColor = 'Magenta'}  
-             if($_.HolyDay -eq $true){ $_.DayColor = 'Blue' }
+		     if($isVacaciones -AND $pendientes -AND ($pendientes[$count] -contains $_.Day)){ $_.DayColor = 'Magenta'} 
+         if($_.HolyDay -eq $true){ $_.DayColor = 'Blue' }
 		     if($_.Date -eq $NowDate){ $_.DayBgColor = 'DarkGray' }else{ $_.DayBgColor = 'Black' }
+		     	if($cumples -AND ($cumples[$count] -contains $_.Day)){ $_.DayBgColor = 'DarkCyan'}
 		     $_.WeekOfMonthNum = $WeekOfMonthNum
 		     if($_.DayOfWeekNum -eq 6){$WeekOfMonthNum++}
 	    }
