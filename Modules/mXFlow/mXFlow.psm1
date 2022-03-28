@@ -17,8 +17,6 @@ Function conanenvironment
   conda activate develop
 }
 
-Function gui { cd E:\git\xflowlegacy}
-
 Function xflowCompile 
 {
    <#
@@ -134,4 +132,27 @@ Function papyrus
   &"E:\papyrus\Papyrus\papyrus.exe" -vm "$env:ProgramFiles\Java\jdk-17\bin\server\jvm.dll" -i "E:\papyrus\papyrus-data-model-master"
 }
 
-Export-ModuleMember -function conanenvironment, gui, xflowCompile, fmkInit, traduccion, papyrus
+Function compilar
+{
+   <#
+    .SYNOPSIS
+      Funcion para compilar en vs2019
+    
+    .DESCRIPTION 
+      Permite compilar en vs2019 developer promp
+    
+    .EXAMPLE 
+      compilar
+    .EXAMPLE 
+      compilar hello.cpp
+    #> 
+
+  Param( [string] $arg = "hello.cpp" )
+
+  cl /W4 /EHsc $arg /link /out:progExe.exe
+}
+
+Function gui { cd E:\git\xflowlegacy}
+Function steps { cd E:\git\xflowlegacy\common\win_compilation\steps}
+
+Export-ModuleMember -function conanenvironment, xflowCompile, fmkInit, traduccion, papyrus, compilar, gui, steps
