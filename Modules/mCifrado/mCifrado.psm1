@@ -98,7 +98,7 @@ Function cifrar
       [string] $nombre,
       [string] $nombreFichero
     )
-	Protect-CmsMessage -To "cn=$nombre@localhost.local" -OutFile $nombreFichero	
+	Protect-CmsMessage -To "cn=$nombre@localhost.local" -Path $nombreFichero -OutFile "$nombreFichero.c.txt"	
 }
 
 
@@ -122,8 +122,188 @@ Function descifrar
       [string] $nombre,
       [string] $nombreFichero
     )
-	Get-CmsMessage -Path $nombreFichero | Unprotect-CmsMessage -To "cn=$nombre@localhost.local" > "$nombreFichero.descifrado.txt"
+	Get-CmsMessage -Path "$nombreFichero.c.txt" | Unprotect-CmsMessage -To "cn=$nombre@localhost.local" > "$nombreFichero.d.txt"
 }
 
+Function comprobarHashMultimedia
+{
+    <#
+    .SYNOPSIS
+     Comprueba cambios en una carpeta
+    .DESCRIPTION 
+      Descarga y descomprime un fichero 17TDT1EU-DA30_0016.kwi del multimedia del coche y comprueba cambios en el fichero md5
+    
+    .EXAMPLE 
+      comprobarHash 
+    .EXAMPLE 
+      comprobarHash .\miPath
+  #> 
 
-Export-ModuleMember -function certificados, borrarCertificado, certificado, cifrar, descifrar
+  PARAM($path = "E:\personal\hashes", $time=0)
+ 
+  $rutaActual = $pwd
+  cd $path
+
+  Remove-Item .\17TDT1EU-DA30_0051.kwi
+
+  $client = (New-Object System.Net.WebClient).DownloadFile("http://streamtechdoc.toyota-motor-europe.com/techdoc3/audio_navigation/17TDT1EU-DA30_Latest.zip","$($path)\update.zip") | Out-Null
+  descomprime "-y"
+
+  .\17TDT1EU-DA30_0051.kwi.md5
+
+  Start-Sleep -s $time
+  cd $rutaActual
+}
+
+Function generatedMD5
+{
+    <#
+    .SYNOPSIS
+     Genera fichero hash
+    .DESCRIPTION 
+      Genera fichero hash con formato: hash ESPACIO ASTERISCOnombreFichero
+    
+    .EXAMPLE 
+      generatedMD5 
+    .EXAMPLE 
+      generatedMD5 .\miPath
+    #> 
+
+  PARAM($path = "E:\personal\hashes")
+
+  $rutaActual = $pwd
+  cd $path
+
+  $files = ls $path -exclude *.md5
+
+  ForEach ($file in $files) 
+  {
+  	Write-Host $file.Name
+    $hash= (Get-FileHash $file -Algorithm MD5).hash
+    $hash + " *"+$file.Name >> "$($file.Name).md5"
+  }
+  
+
+  cd $rutaActual
+}
+
+Function compareHash
+{
+    <#
+    .SYNOPSIS
+     Compara el hash de dos ficheros
+    .DESCRIPTION 
+     Compara el hash de dos ficheros para saber si son el mismo
+    
+    .EXAMPLE 
+      compareHash .\miFile1 .\miFile2
+    #> 
+
+  PARAM($file1, $file2)
+
+  if(($file1 -eq $null) -or  ($file2 -eq $null))
+  {
+    write-host -BackgroundColor Yellow -ForegroundColor Black ('                 NULL FILE                 ')
+    return
+  } 
+
+  $hash1= (Get-FileHash $file1 -Algorithm MD5).hash
+  $hash2= (Get-FileHash $file2 -Algorithm MD5).hash
+
+  if($hash1 -eq $hash2)
+  {
+    write-host -BackgroundColor DarkGreen -ForegroundColor Green ('                 IGUALES                 ')
+  }else{
+    Write-Host -BackgroundColor DarkRed -ForegroundColor Red ('                 DISTINTOS                 ')
+  }
+}
+
+Function checkDirectoryHash
+{
+    <#
+    .SYNOPSIS
+     Compara el hash de los ficheros de un directorio
+    .DESCRIPTION 
+     Compara los hash de un fichero md5 con los ficheros del mismo directorio
+    
+    .EXAMPLE 
+      checkDirectoryHash miDir\miFile.md5
+    #> 
+
+  PARAM([System.IO.FileInfo]$pathFile="E:\personal\hashes\17TDT1EU-DA30_0051.kwi.md5")
+
+  $currentPath= $pwd
+  cd $pathFile.DirectoryName
+  
+  $files = ls $pathFile.DirectoryName -exclude *.md5
+  $listado = get-content $pathFile.Name
+  $hashTable = @{}
+  ForEach ($line in $listado) 
+  {
+      $spliteado = -split $line
+      $hashTable.add($spliteado[1].Remove(0,1), $spliteado[0])
+  }
+  ForEach ($file in $files) 
+  {
+      $hash= (Get-FileHash $file -Algorithm MD5).hash #| Select-Object Hash
+      $pHash = $hashTable[$file.Name]
+      if($pHash -eq $null)
+      {
+        write-host -BackgroundColor Yellow -ForegroundColor Black ('{0} - RENOMBRADO' -f $file.Name)
+        continue
+      } 
+      
+      if($hash -eq $pHash)
+      {
+        write-host -BackgroundColor DarkGreen -ForegroundColor Black ('{0} - CORRECTO' -f $file.Name)
+      }else{
+        Write-Host -BackgroundColor DarkRed -ForegroundColor White ('{0} - INCORRECTO' -f $file.Name)
+      }
+  }
+  cd $currentPath
+}
+
+function downloadFile($url, $targetFile)
+{
+    <#
+    .SYNOPSIS
+     Descarga un ficherod e internet con barra de descarga
+    .DESCRIPTION 
+     Descarga un ficherod e internet con barra de descarga
+    
+    .EXAMPLE 
+      downloadFile $url $dir/nombreNuevo
+    #> 
+
+   $uri = New-Object "System.Uri" "$url"
+   $request = [System.Net.HttpWebRequest]::Create($uri)
+   $request.set_Timeout(15000) #15 second timeout
+   $response = $request.GetResponse()
+
+   $totalLength = [System.Math]::Floor($response.get_ContentLength()/1024)
+   $responseStream = $response.GetResponseStream()
+   $targetStream = New-Object -TypeName System.IO.FileStream -ArgumentList $targetFile, Create
+   $buffer = new-object byte[] 10KB
+
+   $count = $responseStream.Read($buffer,0,$buffer.length)
+   $downloadedBytes = $count
+
+   while ($count -gt 0)
+   {
+       $targetStream.Write($buffer, 0, $count)
+       $count = $responseStream.Read($buffer,0,$buffer.length)
+       $downloadedBytes = $downloadedBytes + $count
+
+       Write-Progress -activity "Downloading file '$($url.split('/') | Select -Last 1)'" -status "Downloaded ($([System.Math]::Floor($downloadedBytes/1024))K of $($totalLength)K): " -PercentComplete ((([System.Math]::Floor($downloadedBytes/1024)) / $totalLength)  * 100)
+
+   }
+
+   Write-Progress -activity "Finished downloading file '$($url.split('/') | Select -Last 1)'"
+   $targetStream.Flush()
+   $targetStream.Close()
+   $targetStream.Dispose()
+   $responseStream.Dispose()
+
+}
+
+Export-ModuleMember -function certificados, borrarCertificado, certificado, cifrar, descifrar, comprobarHashMultimedia, generatedMD5, compareHash, checkDirectoryHash, downloadFile
