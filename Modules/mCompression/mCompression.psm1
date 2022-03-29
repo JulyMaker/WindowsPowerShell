@@ -6,8 +6,8 @@ Function comprimir{
 	 Comprimir ficheros de una carpeta
 	
 	.DESCRIPTION 
-	  Comprime los ficheros de una misma carpeta y a su vez comprime todos lso comprimidos,
-	  también te permite borrarlos al final
+	  Comprime los ficheros de una misma carpeta y a su vez comprime todos los comprimidos, 
+    tambien te pregunta y permite borrarlos al final
 	
 	.EXAMPLE 
 	  comprimir
@@ -47,7 +47,7 @@ Function comprime{
 	 Comprimir ficheros de una carpeta
 	
 	.DESCRIPTION 
-	  Comprime los ficheros de una misma carpeta, tambien te permite borrarlos al final
+	  Comprime los ficheros de una misma carpeta, tambien te pregunta y permite borrarlos al final
 	
 	.EXAMPLE 
 	  comprime
@@ -111,17 +111,28 @@ Function descomprime{
 	 Comprimir ficheros de una carpeta
 	
 	.DESCRIPTION 
-	  Descomprime los ficheros de una misma carpeta, en carpetas o sueltos y borra los
-	  comprimidos
+	  Descomprime los ficheros de una misma carpeta, en carpetas o sueltos y borra los comprimidos,
+    tiene formato desatendido 
 	.EXAMPLE 
-	  descomprimir
+	  descomprime
+	.EXAMPLE
+	  descomprime -y
 	 
 	#> 
 
+   Param( [ValidateSet("-y","-n")][string] $unattended = "-n" )
+
    ls -name *.zip
    ls -name *.7z
-   $input = Read-Host "Va a descomprimir estos ficheros, esta seguro y/n?"
-   $folders = Read-Host "Descomprimir en carpetas y/n?"
+   if($unattended -Match "-n")
+   {
+   	$input = Read-Host "Va a descomprimir estos ficheros, esta seguro y/n?"
+    $folders = Read-Host "Descomprimir en carpetas y/n?"
+   }else{
+   	$input = "y"
+    $folders = "n"
+   }
+   
    if($input -Match "y")
    {
      if($folders -Match "y"){

@@ -32,7 +32,8 @@ Function prompt
     return "$ " 
 }
 
-Function admin {Start-Process powershell -Verb runAs; exit}
+Function admin {Start-Process powershell -Verb runAs;}
+Function admin2 {Start-Process powershell -Verb runAs; exit}
 Function orden {ls | sort $args[0] | select $args[0]}
 Function buscar {ls -r -i * | select-string $args[0]}
 Function grep([string] $ext) {ls -r -i *.$ext | select-string $args[0]}
@@ -49,10 +50,15 @@ Function ip2 {(Test-Connection -ComputerName $env:computername -Count 1).IPV4Add
 Function ipp {  Invoke-RestMethod http://ipinfo.io/json | Select -exp ip }
 Function ippublic { wget "http://checkip.amazonaws.com/"  | Select -exp RawContent }
 Function home { cd $home }
-Function calen { PARAM($anyo = (Get-Date).Year) calendario $anyo $true $true }
+Function calen { PARAM($anyo = (Get-Date).Year, $isVacaciones = $true, $isDiasSenalados = $true) calendario $anyo $isVacaciones $isDiasSenalados }
 
 Function dumpbin{	cd "$env:ProgramFiles (x86)\Microsoft Visual Studio 14.0\VC\bin";	.\dumpbin.exe $args[0] $args[1]}
 Function nano { PARAM($File) bash -c "nano $File" }
+Function hibernar { &"$env:windir\System32\rundll32.exe" powrprof.dll,SetSuspendState Hibernate }
+Function dropbox {abrir "E:\personal\Dropbox"}
+Function killer {ps msiexec| Select-Object id |  %{kill -id $_.Id}; ps winsdksetup| Select-Object id |  %{kill -id $_.Id}; ps adksetup| Select-Object id |  %{kill -id $_.Id}}
+
+Function historial {sublime (Get-PSReadLineOption | select -ExpandProperty HistorySavePath)}
 
 ############################################################
 #################    Alias    ##############################
@@ -72,9 +78,8 @@ set-alias code              "$env:ProgramFiles\Microsoft VS Code\code.exe"
 set-alias sz                "$env:ProgramFiles\7-Zip\7z.exe"
 set-alias slicer            "$env:ProgramFiles\slicer\Slic3r.exe"
 set-alias repetier          "$env:ProgramFiles\Repetier-Host\RepetierHost.exe"
-set-alias kraken            "$env:userprofile\AppData\Local\gitkraken\app-6.3.1\gitkraken.exe"
 set-alias wordexe           "$env:ProgramFiles (x86)\Microsoft Office\Office16\winword.exe"
-set-alias metro             "E:\JulyDocuments\Planoesquematicometro.pdf"    
+set-alias metro             "E:\personal\Planoesquematicometro.pdf"    
 
 ############################################################
 ####################    EJEMPLOS    ########################
@@ -94,6 +99,8 @@ set-alias metro             "E:\JulyDocuments\Planoesquematicometro.pdf"
 # Function virtualMachineCopy {"$env:ProgramFiles\Oracle\VirtualBox\VBoxManage.exe" clonehd "$args[0]\Ubuntu.vdi" "$args[0]\Ubuntu_25.vdi" --existing}
 # &"${Env:ProgramFiles}\Sublime Text 3\sublime_text.exe" $args
 # robocopy dirOrigen dirDestino *.MOV *.AVI *.mpeg *.mp4 *.WAV /S  (no copia los existentes)
+# ls *.txt* | Rename-Item -NewName {$_.Name.insert($_.Name.IndexOf(".txt"),'.ext')}
+# ls -r *.scr | %{rm ($_).FullName}
 
 ############################################################
 #################    Admin    ##############################
