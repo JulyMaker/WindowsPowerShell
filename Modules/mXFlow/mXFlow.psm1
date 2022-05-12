@@ -35,7 +35,8 @@ Function xflowCompile
     #> 
 
   Param( [ValidateSet("cmake","compile","deploy", "full")][string] $action = "default" ) 
-
+  
+  logo4
   $current = $pwd
   cd E:\git\xflowlegacy\common\win_compilation\steps
   conanenvironment
