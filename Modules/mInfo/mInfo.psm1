@@ -190,7 +190,8 @@ Function funciones{
     .EXAMPLE 
       funciones $num
    #>
-    PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count-1)
+
+  PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count - 2)
 
 	$funciones = Get-Module -ListAvailable | select-object Name -first $numModules
 
@@ -249,7 +250,7 @@ Function funcDescrip{
    .EXAMPLE 
      funcDescrip $num
   #>
-   PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count-1)
+   PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count-2)
 
   $funciones = Get-Module -ListAvailable | select-object Name -first $numModules
 
