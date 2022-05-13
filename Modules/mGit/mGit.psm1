@@ -189,6 +189,10 @@ Function gitExp
     Write-Host "  Salvar cambios temporalmente en pila"-foregroundcolor "Green";
     Write-Host
 
+    Write-Host "  git -c http.sslVerify=false";
+    Write-Host "  No verifica conexion ssl"-foregroundcolor "Green";
+    Write-Host
+    
     Write-Host "  CUIDADO" -foregroundcolor "Red";
     Write-Host "  --------" -foregroundcolor "Red";
     Write-Host "  git archive --format=tar master";
