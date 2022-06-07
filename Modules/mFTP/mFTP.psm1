@@ -67,4 +67,54 @@ Function verFtp
     write-host ""
 }
 
-Export-ModuleMember -function verFtp
+Function discoVirtual 
+{ 
+  <#
+    .SYNOPSIS
+     Crea disco virtual
+    
+    .DESCRIPTION 
+      Crea disco virtual en directorio local
+    
+    .EXAMPLE 
+      discoVirtual
+    .EXAMPLE 
+      discoVirtual "C:\\mydir"
+    .EXAMPLE 
+      discoVirtual "/d"
+  #> 
+
+  Param (
+    [char]$drive = 'I',
+    [string]$directory = $home
+  )
+
+  subst "$drive`:" $directory
+  Write-Host "subst <drive>: /d (remove drive)"
+  subst
+}
+
+Function temporalDrive 
+{ 
+  <#
+    .SYNOPSIS
+     Crea disco virtual temporal
+    
+    .DESCRIPTION 
+      Crea disco virtual temporal en directorio local
+    
+    .EXAMPLE 
+      temporalDrive
+  #> 
+
+  Param (
+    [char]$drive = 'T',
+    [string]$directory = $home
+  )
+
+  New-PSDrive -Name $drive -PSProvider FileSystem -Root $directory
+  
+  Write-Host "Remove-PSDrive -Name MyDrive"
+}
+
+Export-ModuleMember -function verFtp, discoVirtual, temporalDrive
