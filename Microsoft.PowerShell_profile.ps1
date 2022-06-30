@@ -4,6 +4,7 @@ Import-Module mlogos
 Import-Module mLSColor
 Import-Module mCompression
 Import-Module mEmail
+Import-Module mFiles
 Import-Module mInfo
 Import-Module mFTP
 Import-Module mMouse

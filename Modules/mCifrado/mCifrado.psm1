@@ -263,6 +263,41 @@ Function checkDirectoryHash
   cd $currentPath
 }
 
+Function compareDirectoryHash
+{
+    <#
+    .SYNOPSIS
+     Compara el hash de los ficheros de un directorio con otro dado
+    .DESCRIPTION 
+     Compara los hash de un fichero con los ficheros del mismo directorio
+    
+    .EXAMPLE 
+      compareDirectoryHash miDir\miFile.txt
+    #> 
+
+  PARAM([System.IO.FileInfo]$pathFile=".\mi.txt")
+
+  $currentPath= $pwd
+  cd $pathFile.DirectoryName
+  
+  $files = ls $pathFile.DirectoryName -exclude *.md5
+  $hash= (Get-FileHash $pathFile -Algorithm MD5).hash #| Select-Object Hash
+
+  ForEach ($file in $files) 
+  {
+      
+      $pHash = (Get-FileHash $file -Algorithm MD5).hash #| Select-Object Hash
+     
+      if($hash -eq $pHash)
+      {
+        write-host -BackgroundColor DarkGreen -ForegroundColor Black ('{0} - IGUAL' -f $file.Name)
+      }else{
+        Write-Host -BackgroundColor DarkRed -ForegroundColor White ('{0} - DISTINTO' -f $file.Name)
+      }
+  }
+  cd $currentPath
+}
+
 function downloadFile($url, $targetFile)
 {
     <#
@@ -306,4 +341,4 @@ function downloadFile($url, $targetFile)
 
 }
 
-Export-ModuleMember -function certificados, borrarCertificado, certificado, cifrar, descifrar, comprobarHashMultimedia, generatedMD5, compareHash, checkDirectoryHash, downloadFile
+Export-ModuleMember -function certificados, borrarCertificado, certificado, cifrar, descifrar, comprobarHashMultimedia, generatedMD5, compareHash, checkDirectoryHash, compareDirectoryHash, downloadFile
