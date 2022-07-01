@@ -119,9 +119,9 @@ Function separarPorFecha{
         }
 
         copy $file -Destination $folderName
+        Remove-Item $file
 
-        # Start-BitsTransfer -Source $file -Destination $folderName -Description $file -DisplayName $file
-        # Remove-Item $file   
+        # Start-BitsTransfer -Source $file -Destination $folderName -Description $file -DisplayName $file   
       } 
     }
 
