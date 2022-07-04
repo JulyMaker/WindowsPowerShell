@@ -65,7 +65,7 @@ Function dronFPSPath{
     {
       Write-Host "Testeando $($file)" -ForegroundColor Green
       Write-Host "  " -NoNewline
-      dronFPS $file $limitValue
+      dronFPS "$($path)/$($file)" $limitValue
     }
   }
 }
