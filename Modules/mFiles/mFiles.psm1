@@ -81,7 +81,7 @@ Function separarPorFecha{
       separarPorFecha $path
     #>
 
-  PARAM( $path=".")
+  PARAM( $path=".", $moveVideo= $true)
 
   $files = ls $path
   $regex_opts = ([System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
@@ -98,6 +98,7 @@ Function separarPorFecha{
   foreach($file in $files) 
   {
     $count++
+    $skipVideo = $false
 
     if($file.LastWriteTime -match $regex)
     {
@@ -109,7 +110,15 @@ Function separarPorFecha{
         }
         else
         {
-          $folderName = "$($Matches.3)-$($Matches.1)-$($Matches.2)/videos"
+          if($moveVideo)
+          {
+            $folderName = "$($Matches.3)-$($Matches.1)-$($Matches.2)/videos"
+          }
+          else
+          {
+            $skipVideo = $true
+          }
+          
         }
         
 
@@ -118,9 +127,12 @@ Function separarPorFecha{
           mkDir $folderName > $null
         }
 
-        copy $file -Destination $folderName
-        Remove-Item $file
-
+        if(!$skipVideo)
+        {
+          copy $file -Destination $folderName
+          Remove-Item $file
+        }
+        
         # Start-BitsTransfer -Source $file -Destination $folderName -Description $file -DisplayName $file   
       } 
     }
