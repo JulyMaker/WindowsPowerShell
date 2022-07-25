@@ -2,10 +2,16 @@ import os, sys, re
 import pathlib
 import time
 
-if(len(sys.argv) > 1):
+
+if(len(sys.argv) > 2):
   path = pathlib.Path(sys.argv[1])
+  moveVideo= sys.argv[2]
+elif(len(sys.argv) > 1):
+  path = pathlib.Path(sys.argv[1])
+  moveVideo = True
 else:
   path = pathlib.Path('.')
+  moveVideo = True
 
 files = [file.name for file in path.iterdir() if file.is_file()]
 
@@ -18,6 +24,7 @@ errorF = []
 
 for file in files:
     count = count + 1
+    skipVideo = False
     pathFile = os.path.join(path, file)
 
     m_ti = time.ctime( os.path.getmtime( pathFile )) 
@@ -28,13 +35,16 @@ for file in files:
     if(file.lower().endswith('.jpg')):
       folderName = os.path.join(date, "images")
     else:
-      folderName = os.path.join(date, "videos")
-
-    destpath = os.path.join(path, folderName)
-    os.makedirs(destpath, exist_ok=True)
+      if(moveVideo == True):
+        folderName = os.path.join(date, "videos")
+      else:
+        skipVideo = True
 
     try :
-      os.rename(pathFile, os.path.join(destpath, file))
+      if(not skipVideo):
+        destpath = os.path.join(path, folderName)
+        os.makedirs(destpath, exist_ok=True)
+        os.rename(pathFile, os.path.join(destpath, file))
     except OSError as error:
       errorF.append(file)
 
