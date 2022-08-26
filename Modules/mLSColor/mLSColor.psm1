@@ -793,7 +793,7 @@ Function grepc
 
   PARAM($Pattern, [String]$ForegroundColor = 'Red', [String]$BackgroundColor = 'DarkMagenta', [Switch]$CaseSensitive, [Switch]$NotMatch)
 
- ls -r -i * | Select-String $Pattern | Select-ColorString $Pattern -ForegroundColor:$ForegroundColor -BackgroundColor:$BackgroundColor -CaseSensitive:$CaseSensitive -NotMatch:$NotMatch
+ ls -r -i * | where fullname -notlike *.git* | Select-String $Pattern | Select-ColorString $Pattern -ForegroundColor:$ForegroundColor -BackgroundColor:$BackgroundColor -CaseSensitive:$CaseSensitive -NotMatch:$NotMatch
 
 }
 
