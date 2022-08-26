@@ -151,5 +151,60 @@ Function separarPorFecha{
   Write-Host -NoNewLine "OK" -ForegroundColor "Green"
 }
 
-Export-ModuleMember -function dronFPS, dronFPSPath, separarPorFecha
+Function starMonitor{
+    <#  
+    .SYNOPSIS  
+       Crea un watcher en una carpeta dada
+    .DESCRIPTION 
+       Crea un watcher que vigila la creacion de un fichero en una carpeta dada
+    .EXAMPLE 
+      starMonitor $path
+    #>
+
+  PARAM( $path=".")
+
+  $watcher = New-Object System.IO.FileSystemWatcher
+  $watcher.Path = $path
+  $watcher.EnableRaisingEvents = $true
+  
+  $action =
+  {
+      $FullPath = $event.SourceEventArgs.FullPath
+      $ChangeType = $event.SourceEventArgs.ChangeType
+      Write-Host "$(Get-Date) $FullPath detectado $ChangeType"
+  
+      #Emitimos pitido    
+      [console]::Beep()
+  }
+
+  Register-ObjectEvent $watcher 'Created' -Action $action
+}
+
+Function stopMonitor{
+    <#  
+    .SYNOPSIS  
+       Cancela todos los monitores
+    .DESCRIPTION 
+       Lista y cancela todos los monitores
+    .EXAMPLE 
+      stopMonitor
+    #>
+
+  Get-EventSubscriber | Unregister-Event
+}
+
+Function showMonitors{
+    <#  
+    .SYNOPSIS  
+       Lista todos los monitores activos
+    .DESCRIPTION 
+       Lista todos los monitores activos
+    .EXAMPLE 
+      showMonitors
+    #>
+
+   Get-EventSubscriber
+}
+
+Export-ModuleMember -function dronFPS, dronFPSPath, separarPorFecha, starMonitor, stopMonitor, showMonitors
 
