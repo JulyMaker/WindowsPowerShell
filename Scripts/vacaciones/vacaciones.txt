@@ -67,8 +67,8 @@ Abril
 Mayo
 Junio
 Julio
-Agosto
-Septiembre
-Octubre
-Noviembre
-Diciembre
+Agosto 11 12 16
+Septiembre 1 2 5 6 30
+Octubre 3 4 5 6 7 10 11
+Noviembre 2 3 4 7 8 10 11
+Diciembre 5 7 9

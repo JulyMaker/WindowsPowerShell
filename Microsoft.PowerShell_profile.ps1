@@ -59,6 +59,7 @@ Function nano { PARAM($File) bash -c "nano $File" }
 Function hibernar { &"$env:windir\System32\rundll32.exe" powrprof.dll,SetSuspendState Hibernate }
 Function dropbox {abrir "E:\personal\Dropbox"}
 Function killer {ps msiexec| Select-Object id |  %{kill -id $_.Id}; ps winsdksetup| Select-Object id |  %{kill -id $_.Id}; ps adksetup| Select-Object id |  %{kill -id $_.Id}}
+Function repo {cd "E:\personal\Repos\BodaWeb\bodajulioyraquel.github.io"; abrir "E:\personal\Repos\BodaWeb\bodajulioyraquel.github.io"}
 
 Function historial {sublime (Get-PSReadLineOption | select -ExpandProperty HistorySavePath)}
 
@@ -81,7 +82,8 @@ set-alias sz                "$env:ProgramFiles\7-Zip\7z.exe"
 set-alias slicer            "$env:ProgramFiles\slicer\Slic3r.exe"
 set-alias repetier          "$env:ProgramFiles\Repetier-Host\RepetierHost.exe"
 set-alias wordexe           "$env:ProgramFiles (x86)\Microsoft Office\Office16\winword.exe"
-set-alias metro             "E:\personal\Planoesquematicometro.pdf"    
+set-alias metro             "E:\personal\Planoesquematicometro.pdf"  
+set-alias cmakes            "$env:ProgramFiles\CMake\bin\cmake.exe"  
 
 ############################################################
 ####################    EJEMPLOS    ########################

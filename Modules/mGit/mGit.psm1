@@ -219,6 +219,20 @@ Function gitExp
     Write-Host
 }
 
+Function logFormat 
+{
+    <#
+    .SYNOPSIS
+     Git log formateado
+    
+    .DESCRIPTION 
+      Git log formateado con colores y ramas
+    
+    .EXAMPLE 
+      logFormat
+    #> 
 
+    git log --graph --pretty=format:'%C(cyan)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>% Creset' --abbrev-commit
+}
 
-Export-ModuleMember -function gitFunctions, gitExp, comitear -Alias funcionesGit
+Export-ModuleMember -function gitFunctions, gitExp, comitear, logFormat -Alias funcionesGit

@@ -54,6 +54,6 @@ Junio
 Julio
 Agosto
 Septiembre
-Octubre
+Octubre 31
 Noviembre
 Diciembre
