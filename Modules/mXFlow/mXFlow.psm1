@@ -43,10 +43,10 @@ Function xflowCompile
 
   switch($action)
   {
-    "cmake"   { ./cmake_xflow2.bat }
+    "cmake"   { E:\git\cmake_xflow2.bat }
     "compile" { ./compile_xflow.bat }
     "deploy"  { ./deploy_xflow.bat }
-    "full"    { ./cmake_xflow2.bat; ./compile_xflow.bat; ./deploy_xflow.bat}
+    "full"    { E:\git\cmake_xflow2.bat; ./compile_xflow.bat; ./deploy_xflow.bat}
     default   {}
   }
 
