@@ -74,7 +74,7 @@ $profileDir = ([system.io.fileinfo]$profile).DirectoryName+"\Scripts"
 if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27} 
 
 	$pendientesFichero = $profileDir+"\vacaciones\pendientes.txt"
-    $fiestasFichero = $profileDir+"\vacaciones\fiestas.txt"
+  $fiestasFichero = $profileDir+"\vacaciones\fiestas.txt"
 	$vacacionesFichero = $profileDir+"\vacaciones\vacaciones.txt"
 	$fechasSenaladasFichero = $profileDir+"\vacaciones\fechasSenaladas.txt"
 	$cumplesFichero = $profileDir+"\vacaciones\cumples.txt"
@@ -213,7 +213,14 @@ if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27}
 
 if ($isVacaciones)
 {
-  Write-Host "Dias cogidos: ${cogidos}      Dias restantes: ${restantes}     Ano anterior: ${anterior}" -ForegroundColor Yellow
+  Write-Host "Dias cogidos: " -NoNewline -ForegroundColor Yellow
+  Write-Host "${cogidos}" -NoNewline -ForegroundColor Green
+  Write-Host "  Dias restantes: ${restantes}     " -NoNewline -ForegroundColor Yellow
+  Write-Host "Ano anterior: " -NoNewline -ForegroundColor Yellow
+  Write-Host "${anterior}  " -NoNewline -ForegroundColor Magenta
+  Write-Host "Festivo" -NoNewline -BackgroundColor Black -ForegroundColor Blue
+  Write-Host "  " -NoNewline
+  Write-Host "Cumples" -BackgroundColor DarkCyan
+
   Write-Host ''
 }
-
