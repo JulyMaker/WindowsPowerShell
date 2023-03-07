@@ -32,9 +32,11 @@ Function xflowCompile
       xflowCompile cmake / xflowCompile compile / xflowCompile deploy
     .EXAMPLE 
       xflowCompile full
+    .EXAMPLE 
+      xflowCompile xtree
     #> 
 
-  Param( [ValidateSet("cmake","compile","deploy", "full")][string] $action = "default" ) 
+  Param( [ValidateSet("cmake","compile","deploy", "full", "xtree")][string] $action = "default" ) 
   
   logo4
   $current = $pwd
@@ -43,10 +45,11 @@ Function xflowCompile
 
   switch($action)
   {
-    "cmake"   { E:\git\cmake_xflow2.bat }
+    "cmake"   { ./cmake_xflow.bat }
     "compile" { ./compile_xflow.bat }
     "deploy"  { ./deploy_xflow.bat }
-    "full"    { E:\git\cmake_xflow2.bat; ./compile_xflow.bat; ./deploy_xflow.bat}
+    "full"    { ./cmake_xflow.bat; ./compile_xflow.bat; ./deploy_xflow.bat}
+    "xtree"   { ./cmake_xtree.bat; ./compile_xtree.bat; ./deploy_xtree.bat}
     default   {}
   }
 
