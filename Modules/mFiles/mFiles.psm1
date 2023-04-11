@@ -70,6 +70,29 @@ Function dronFPSPath{
   }
 }
 
+Function separatedFiles{
+    <#  
+    .SYNOPSIS  
+       Separar ficheros en carpetas por fecha con script python
+    .DESCRIPTION 
+       Separar ficheros en carpetas por fecha con script python
+    .EXAMPLE 
+      separatedFiles $path $moveVideo
+    #>
+
+  PARAM( $path=".", $moveVideo= $true)
+
+  $script = ([system.io.fileinfo]$profile).DirectoryName + "\Modules\mFiles\separatedFiles2.py"
+  
+  if (-not $moveVideo)
+  {
+    python $script $path False
+    return
+  }
+
+  python $script $path
+}
+
 
 Function separarPorFecha{
     <#  
@@ -206,5 +229,5 @@ Function showMonitors{
    Get-EventSubscriber
 }
 
-Export-ModuleMember -function dronFPS, dronFPSPath, separarPorFecha, starMonitor, stopMonitor, showMonitors
+Export-ModuleMember -function dronFPS, dronFPSPath, separarPorFecha, separatedFiles, starMonitor, stopMonitor, showMonitors
 
