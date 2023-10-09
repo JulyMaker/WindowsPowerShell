@@ -8,7 +8,7 @@ _powershell functions, modules and scripts_
 
 ## <a name="Cloning"></a>Cloning 🛠️
 
->This repository contains modules,  scripts and Microsoft.PowerShell_profile:
+>This repository contains modules, scripts and Microsoft.PowerShell_profile:
 
 ```
 C:\Users\youruser\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
