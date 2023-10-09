@@ -402,6 +402,35 @@ Function espacio
 }
 
 
+Function numElem
+{
+    <#
+    .SYNOPSIS
+      Devuelve el numero de elementos de un directorio y sus subcarpetas
+    
+    .DESCRIPTION 
+      Devuelve el numero de elementos de un directorio y sus subcarpetas de forma recursiva
+    
+    .EXAMPLE 
+      numElem  
+   #> 
 
-Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip
+    param ($dir)
+    $elements = 0
+    $color = "Yellow"
+
+    Write-Host
+    dir -recurse |  ?{ $_.PSIsContainer } | %{ Write-Host $_.Name (dir $_.FullName | measure).Count }
+
+    dir -r | ?{ $_.PSIsContainer } | foreach-object {
+
+      $elements+= (dir $_.FullName | measure).Count
+    }
+
+
+    Write-Host
+    Write-Host ("    Total elements: " + $elements) -foregroundcolor $color 
+}
+
+Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip, numElem
 
