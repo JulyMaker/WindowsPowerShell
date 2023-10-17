@@ -1,31 +1,9 @@
 ####### MODULO EXTRAS #######
 
-Function word{
-    <#
-    .SYNOPSIS
-      Inicia un word en el escritorio y lo abre
-    .DESCRIPTION 
-      Inicia un word en blanco en el escritorio y lo abre
-    
-    .EXAMPLE 
-      word  
-   #> 
-
-    $file = "$env:userprofile\Desktop\word.docx"
-    $i= 0       
-
-    while(Test-Path $file)
-    {
-        $i++
-        $file = "$env:userprofile\Desktop\word($i).docx"
-    }
-
-    touch $file 
-    wordexe $file  
-}
 
 # Function serial
-Function serial{
+Function serial
+{
   (Get-WmiObject -query 'select * from SoftwareLicensingService').OA3xOriginalProductKey
 }
 
@@ -67,7 +45,7 @@ Function cuenta
     .SYNOPSIS
       Inicia una cuenta
     .DESCRIPTION 
-      Inicia una cuenta alante hasta un tiempo dado en milisegundos, interfaz colores
+      Inicia una cuenta alante hasta un tiempo dado en segundos, interfaz colores
     
     .EXAMPLE 
       cuenta $time  
@@ -171,5 +149,5 @@ Function trf {
 
 
 
-Export-ModuleMember -function  word, cuentaAtras, cuenta, GetInicio, shader, trf
+Export-ModuleMember -function  cuentaAtras, cuenta, GetInicio, shader, trf
 

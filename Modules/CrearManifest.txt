@@ -12,7 +12,7 @@ $paramHash = @{
  Description = "Fechas module"
  FormatsToProcess = ""
  FunctionsToExport = "*"
- AliasesToExport = ""
+ AliasesToExport = "*"
  VariablesToExport = ""
  CmdletsToExport = ""
 }
