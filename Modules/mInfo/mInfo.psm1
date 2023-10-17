@@ -1,5 +1,11 @@
 ####### MODULO INFO #######
 
+############### Alias ####################
+Set-Alias elem numElem
+
+
+############# Function ###################
+
 Function GetInfo
 {
     <#
@@ -483,5 +489,42 @@ Function numElem
     Write-Host ("    Total elements: " + $elements) -foregroundcolor $color 
 }
 
-Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip, numElem, modulo
+
+Function visualizacion 
+{ 
+  <#
+    .SYNOPSIS
+      Muestra fechas relevantes para el coche en forma de tabla
+    
+    .DESCRIPTION 
+      Muestra fechas relevantes para el coche en forma de tabla
+    
+    .EXAMPLE 
+      visualizacion
+  #> 
+
+  $startDate=[datetime]"2023/11/23"
+  
+  $color ="Yellow"
+  $color2 = "White"
+  $coche = [math]::round((NEW-TIMESPAN -Start $startDate -End (GET-DATE)).Totaldays,3)
+  $unMeses = 30 - $coche
+  $unMid = $unMeses + 15
+  $dosMeses = [math]::round(60 - $coche,3)
+  $dosMid = [math]::round($dosMeses + 15,3)
+  $tresMeses = [math]::round(90 - $coche, 3)
+
+  Write-Host ""
+  Write-host (" {0,11} {1,8} {2,7} {3,7} {4,7}" -f "Mode   ", "  DeadLine", " Date", "      Mid", "      Date") -foregroundcolor Cyan
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "----------", "--------", "-------", "-------", "-------") -foregroundcolor $color
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "Esperando", $coche, "", "", "") -foregroundcolor $color 
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "----------", "--------", "-------", "-------", "-------") -foregroundcolor $color
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "Un Mes", $unMeses, "13 ABR", $unMid, "28 ABR") -foregroundcolor $color 
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "Dos Meses", $dosMeses, "13 MAY", $dosMid, "28 MAY") -foregroundcolor $color
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "Tres Meses", $tresMeses, "13 JUN", "", "") -foregroundcolor $color
+  Write-host ("|{0,11} | {1,8} | {2,7} | {3,7} | {4,7} |" -f "----------", "--------", "-------", "-------", "-------") -foregroundcolor $color 
+  Write-Host ""
+}
+
+Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip, numElem, modulo, visualizacion -Alias elem
 

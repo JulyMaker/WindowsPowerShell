@@ -8,7 +8,6 @@ Import-Module mFiles
 Import-Module mInfo
 Import-Module mFTP
 Import-Module mMouse
-Import-Module mFechas
 Import-Module mGit
 Import-Module mXFlow
 Import-Module PSReadLine
@@ -19,7 +18,7 @@ if (Test-Path($ChocolateyProfile)) {
 
 
 ############################################################
-###############    Functions    ############################
+###################    Promp    ############################
 ############################################################
 
 #Function prompt { "PS $pwd$" }
@@ -34,6 +33,13 @@ Function prompt
     return "$ " 
 }
 
+
+############################################################
+###############    Functions    ############################
+############################################################
+
+
+
 Function admin {Start-Process powershell -Verb runAs;}
 Function admin2 {Start-Process powershell -Verb runAs; exit}
 Function orden {ls | sort $args[0] | select $args[0]}
@@ -43,8 +49,7 @@ Function grepExt([string] $ext) {ls -r -i *.$ext | select-string $args[0]}
 Function profileDir{abrir ([system.io.fileinfo]$profile).DirectoryName}
 Function profileFile{ sublime $profile }
 Function profile{cd ([system.io.fileinfo]$profile).DirectoryName}
-Function job { Start-job { $args[0] } -Name trabajoJuly }
-Function jobResult { Get-Job -Name trabajoJuly | Receive-Job }
+
 Function pw { start powershell }
 Function pwi { start powershell ISE; exit}
 Function ip { ipconfig | findstr "Direccion IPv4"}
@@ -57,11 +62,10 @@ Function calen { PARAM($anyo = (Get-Date).Year, $isVacaciones = $true, $isDiasSe
 Function dumpbin{	cd "$env:ProgramFiles (x86)\Microsoft Visual Studio 14.0\VC\bin";	.\dumpbin.exe $args[0] $args[1]}
 Function nano { PARAM($File) bash -c "nano $File" }
 Function hibernar { &"$env:windir\System32\rundll32.exe" powrprof.dll,SetSuspendState Hibernate }
-Function dropbox {abrir "E:\personal\Dropbox"}
 Function killer {ps msiexec| Select-Object id |  %{kill -id $_.Id}; ps winsdksetup| Select-Object id |  %{kill -id $_.Id}; ps adksetup| Select-Object id |  %{kill -id $_.Id}}
-Function repo {cd "E:\personal\Repos\BodaWeb\bodajulioyraquel.github.io"; abrir "E:\personal\Repos\BodaWeb\bodajulioyraquel.github.io"}
 
 Function historial {sublime (Get-PSReadLineOption | select -ExpandProperty HistorySavePath)}
+
 
 ############################################################
 #################    Alias    ##############################
@@ -84,26 +88,6 @@ set-alias repetier          "$env:ProgramFiles\Repetier-Host\RepetierHost.exe"
 set-alias wordexe           "$env:ProgramFiles (x86)\Microsoft Office\Office16\winword.exe" 
 set-alias cmakes            "$env:ProgramFiles\CMake\bin\cmake.exe"  
 
-############################################################
-####################    EJEMPLOS    ########################
-############################################################
-
-# $env:PSModulePath
-# (Get-Item $FileNamePath ).Extension (.Basename / .Name /.DirectoryName / .FullName)
-# PS C:\Users\jmn6> dir "C:\Program Files" -File -Recurse | Sort-Object Count -Descending | Select-Object Name, Count | Out-GridView
-# Get-Command | Select-Object Name,source | Where-Object {$_.source -eq "mLSColor"} |Get-Help | Out-File C:\Users\jmn6\Desktop\Ayuda.txt
-# Save-Help -Force -UICulture "en-us" -DestinationPath C:\PowerShell-Help
-# Update-Help -Force -UICulture "en-us" -SourcePath C:\PowerShell-Help
-# systeminfo | Select-String "^OS Name","^OS Version"
-# ipconfig | select-string -pattern 192
-# Set-ExecutionPolicy Unrestricted | RemoteSigned | AllSigned | Restricted | Default | Bypass | Undefined
-# Get-ExecutionPolicy -List
-# $x = $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-# Function virtualMachineCopy {"$env:ProgramFiles\Oracle\VirtualBox\VBoxManage.exe" clonehd "$args[0]\Ubuntu.vdi" "$args[0]\Ubuntu_25.vdi" --existing}
-# &"${Env:ProgramFiles}\Sublime Text 3\sublime_text.exe" $args
-# robocopy dirOrigen dirDestino *.MOV *.AVI *.mpeg *.mp4 *.WAV /S  (no copia los existentes)
-# ls *.txt* | Rename-Item -NewName {$_.Name.insert($_.Name.IndexOf(".txt"),'.ext')}
-# ls -r *.scr | %{rm ($_).FullName}
 
 ############################################################
 #################    Admin    ##############################
@@ -137,3 +121,25 @@ Function inicio{
 ############################################################
 
 inicio
+
+
+############################################################
+####################    EJEMPLOS    ########################
+############################################################
+
+# $env:PSModulePath
+# (Get-Item $FileNamePath ).Extension (.Basename / .Name /.DirectoryName / .FullName)
+# PS C:\Users\jmn6> dir "C:\Program Files" -File -Recurse | Sort-Object Count -Descending | Select-Object Name, Count | Out-GridView
+# Get-Command | Select-Object Name,source | Where-Object {$_.source -eq "mLSColor"} |Get-Help | Out-File C:\Users\jmn6\Desktop\Ayuda.txt
+# Save-Help -Force -UICulture "en-us" -DestinationPath C:\PowerShell-Help
+# Update-Help -Force -UICulture "en-us" -SourcePath C:\PowerShell-Help
+# systeminfo | Select-String "^OS Name","^OS Version"
+# ipconfig | select-string -pattern 192
+# Set-ExecutionPolicy Unrestricted | RemoteSigned | AllSigned | Restricted | Default | Bypass | Undefined
+# Get-ExecutionPolicy -List
+# $x = $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+# Function virtualMachineCopy {"$env:ProgramFiles\Oracle\VirtualBox\VBoxManage.exe" clonehd "$args[0]\Ubuntu.vdi" "$args[0]\Ubuntu_25.vdi" --existing}
+# &"${Env:ProgramFiles}\Sublime Text 3\sublime_text.exe" $args
+# robocopy dirOrigen dirDestino *.MOV *.AVI *.mpeg *.mp4 *.WAV /S  (no copia los existentes)
+# ls *.txt* | Rename-Item -NewName {$_.Name.insert($_.Name.IndexOf(".txt"),'.ext')}
+# ls -r *.scr | %{rm ($_).FullName}
