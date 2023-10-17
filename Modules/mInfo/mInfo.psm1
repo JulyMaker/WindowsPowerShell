@@ -293,6 +293,57 @@ Function funcDescrip{
      } 
    }
 }
+
+
+Function modulo{  
+
+   <#  
+   .SYNOPSIS  
+      Muestra la descripcion de las funciones de un modulo dado
+   .DESCRIPTION 
+      Muestra la descripcion de las funciones de un modulo dado
+   .EXAMPLE 
+     modulo $moduleName
+  #>
+   PARAM($moduleName="mInfo", $desc=$true, [int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count-2)
+
+  $funciones = Get-Module -ListAvailable | select-object Name -first $numModules
+
+  ForEach ($item in $funciones)
+  { 
+   if($item.Name -ne $moduleName){ continue; }
+   Write-Host ""
+   Write-Host " $($item.Name)" -foregroundcolor "Red"
+
+   $func = Get-Command -Module $item.Name | select-object Name
+
+   if($desc)
+   {
+    ForEach ($name in $func)
+     {
+       Write-Host "  $($name.Name)" -foregroundcolor "Cyan"
+       $description = (get-help $name.Name).description
+       Write-Host "   $($description.Text)" -foregroundcolor "Green"
+     }  
+   }else{
+    $par= 0
+    ForEach ($name in $func)
+    {
+      if($par%2 -eq 0)
+      {
+        Write-Host ("{0,25}" -f $name.Name) -foregroundcolor "Cyan" -noNewLine
+      }else{
+        Write-Host ("{0,30}" -f $name.Name) -foregroundcolor "Cyan"
+      }  
+      $par++ 
+    }
+   }
+     
+   Write-Host ""
+   break
+  }
+}
+
 Function scripts{  
 
   <#  
@@ -432,5 +483,5 @@ Function numElem
     Write-Host ("    Total elements: " + $elements) -foregroundcolor $color 
 }
 
-Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip, numElem
+Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip, numElem, modulo
 
