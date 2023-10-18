@@ -6,6 +6,11 @@ Set-Alias elem numElem
 
 ############# Function ###################
 
+
+##########################################
+############# SYSTEM #####################
+##########################################
+
 Function GetInfo
 {
     <#
@@ -171,6 +176,35 @@ Function inforam2
   Get-WmiObject -class "Win32_PhysicalMemory" | FT PSComputerName,Name,DeviceLocator,Manufacturer,Capacity,SerialNumber;
 }
 
+
+Function espacio
+{
+  <#  
+    .SYNOPSIS  
+       Espacio disponible en todos los discos
+    .DESCRIPTION 
+       Espacio disponible en todos los discos
+    .EXAMPLE 
+      espacio
+   #>
+   # Function espacioC {Gwmi -class Win32_volume | select name, capacity | where {$_.name -like "c*"}}
+   
+
+  Get-WmiObject -Class Win32_logicaldisk | Format-Table -Property @{
+      Name       = 'Unidad'
+      Expression = {$_.DeviceID}
+  }, @{
+      Name       = 'TamanoTotal(GB)'
+      Expression = {[decimal]('{0:N0}' -f($_.Size/1gb))}
+  }, @{
+      Name       = 'Disponible(GB)'
+      Expression = {[decimal]('{0:N0}'-f($_.Freespace/1gb))}
+  }, @{
+      Name       = 'Disponible(%)'
+      Expression = {'{0,6:P0}' -f(($_.Freespace/1gb) / ($_.size/1gb))}
+  } -AutoSize
+}
+
 Function seguridad
 {
     <#  
@@ -183,6 +217,11 @@ Function seguridad
     #>
   Get-ExecutionPolicy -List
 }
+
+
+##########################################
+########### POWERSHELL ###################
+##########################################
 
 Function funciones{  
 
@@ -369,6 +408,25 @@ Function scripts{
    }  
 }
 
+Function ayuda{  
+
+  <#  
+    .SYNOPSIS  
+       Muestra los ejemplos de una funcion dada
+    .DESCRIPTION 
+       Muestra los ejemplos de una funcion dada
+    .EXAMPLE 
+      ayuda $comando
+   #>
+
+   PARAM($comando="ayuda") 
+   get-help $comando -examples
+}
+
+##########################################
+############## PORTS #####################
+##########################################
+
 Function puertos{
     <#  
     .SYNOPSIS  
@@ -430,34 +488,10 @@ Function inventario{
   New-ConditionalText VERDADERO -BackgroundColor LightGreen -ConditionalTextColor DarkGreen)-IncludePivotTable -PivotTableName TablaDinamica -PivotRows IsDHCPEnabled -PivotData ComputerName -PivotColumns IPAddress
 }
 
-Function espacio
-{
-  <#  
-    .SYNOPSIS  
-       Espacio disponible en todos los discos
-    .DESCRIPTION 
-       Espacio disponible en todos los discos
-    .EXAMPLE 
-      espacio
-   #>
-   # Function espacioC {Gwmi -class Win32_volume | select name, capacity | where {$_.name -like "c*"}}
-   
 
-  Get-WmiObject -Class Win32_logicaldisk | Format-Table -Property @{
-      Name       = 'Unidad'
-      Expression = {$_.DeviceID}
-  }, @{
-      Name       = 'TamanoTotal(GB)'
-      Expression = {[decimal]('{0:N0}' -f($_.Size/1gb))}
-  }, @{
-      Name       = 'Disponible(GB)'
-      Expression = {[decimal]('{0:N0}'-f($_.Freespace/1gb))}
-  }, @{
-      Name       = 'Disponible(%)'
-      Expression = {'{0,6:P0}' -f(($_.Freespace/1gb) / ($_.size/1gb))}
-  } -AutoSize
-}
-
+##########################################
+############### NUMFILES #################
+##########################################
 
 Function numElem
 {
@@ -526,5 +560,5 @@ Function visualizacion
   Write-Host ""
 }
 
-Export-ModuleMember -function GetInfo, GetVersion, serial, seguridad, path, ram, cpu,slotsram, inforam, inforam2, funciones, scripts, puertos, pingP, tcpP, inventario, espacio, funcDescrip, numElem, modulo, visualizacion -Alias elem
+Export-ModuleMember -function * -Alias *
 
