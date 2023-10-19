@@ -156,7 +156,32 @@ Function compilar
   cl /W4 /EHsc $arg /link /out:progExe.exe
 }
 
+Function common
+{
+   <#
+    .SYNOPSIS
+      Compilar un common local
+    
+    .DESCRIPTION 
+      Compilar un common local
+    
+    .EXAMPLE 
+      common
+    #> 
+
+  Write-Host "Abriendo consola visual: x64 Native Tools Command Prompt for VS 2019"
+  cmd /k "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat"
+
+  Write-Host
+  Write-Host "set CC=cl"
+  Write-Host "set CXX=cl"
+  Write-Host "set CONAN_CMAKE_GENERATOR=Ninja"
+  Write-Host "conda activate develop"
+  
+  Write-Host "conan create . xflow_common/<version>@xflow/stable -s build_type=Release --build missing"
+}
+
 Function gui { cd E:\git\xflowlegacy}
 Function steps { cd E:\git\xflowlegacy\common\win_compilation\steps}
 
-Export-ModuleMember -function conanenvironment, xflowCompile, fmkInit, traduccion, papyrus, compilar, gui, steps
+Export-ModuleMember -function conanenvironment, xflowCompile, fmkInit, traduccion, papyrus, compilar, gui, steps, common
