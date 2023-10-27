@@ -25,7 +25,7 @@ if (Test-Path($ChocolateyProfile)) {
 Function prompt 
 {
  Write-Host -NoNewLine "PS ";
- Write-Host -NoNewLine "$pwd" -ForegroundColor Gray;
+ Write-Host -NoNewLine "$pwd" -ForegroundColor DarkGray;
   $branch = git rev-parse --abbrev-ref HEAD;
 
    if($branch){Write-Host -NoNewLine -ForegroundColor Green " ($branch)"}
@@ -80,12 +80,11 @@ set-alias particiones       Get-partition
 set-alias monitor           resmon
 set-alias licencia          serial
 set-alias cambiarColores    Get-PSReadLineOption
-set-alias sublime           "$env:ProgramFiles\Sublime Text\sublime_text.exe"
+set-alias sublime           "$env:ProgramFiles\Sublime Text 3\sublime_text.exe"
 set-alias code              "$env:ProgramFiles\Microsoft VS Code\code.exe"
 set-alias sz                "$env:ProgramFiles\7-Zip\7z.exe"
 set-alias slicer            "$env:ProgramFiles\slicer\Slic3r.exe"
 set-alias repetier          "$env:ProgramFiles\Repetier-Host\RepetierHost.exe"
-set-alias wordexe           "$env:ProgramFiles (x86)\Microsoft Office\Office16\winword.exe" 
 set-alias cmakes            "$env:ProgramFiles\CMake\bin\cmake.exe"  
 
 

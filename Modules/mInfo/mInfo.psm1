@@ -510,12 +510,29 @@ Function numElem
     $elements = 0
     $color = "Yellow"
 
+    #Write-Host
+    #dir -recurse |  ?{ $_.PSIsContainer } | %{ Write-Host $_.Name (dir $_.FullName | measure).Count }
     Write-Host
-    dir -recurse |  ?{ $_.PSIsContainer } | %{ Write-Host $_.Name (dir $_.FullName | measure).Count }
+    $elements+= (dir . | ?{$_ -is [System.IO.FileInfo] } | measure).Count
+    Write-Host $pwd $elements
 
+    dir . |  ?{ $_.PSIsContainer } | %{
+     $elements = 0
+     $elements+= (dir $_.FullName | ?{$_ -is [System.IO.FileInfo] } | measure).Count
+     dir -r $_.FullName | ?{ $_.PSIsContainer } | foreach-object {
+
+      $elements+= (dir $_.FullName| ?{$_ -is [System.IO.FileInfo] } | measure).Count
+     }
+     Write-Host $_.Name $elements 
+    }
+
+
+
+    $elements = 0
+    $elements+= (dir . | ?{$_ -is [System.IO.FileInfo] } | measure).Count
     dir -r | ?{ $_.PSIsContainer } | foreach-object {
 
-      $elements+= (dir $_.FullName | measure).Count
+      $elements+= (dir $_.FullName| ?{$_ -is [System.IO.FileInfo] } | measure).Count
     }
 
 
