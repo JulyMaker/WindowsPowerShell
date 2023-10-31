@@ -10,6 +10,7 @@ Import-Module mMouse
 Import-Module mFechas
 Import-Module mGit
 Import-Module PSReadLine
+Import-Module posh-git
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"

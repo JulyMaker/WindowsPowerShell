@@ -11,6 +11,7 @@ Import-Module mMouse
 Import-Module mGit
 Import-Module mXFlow
 Import-Module PSReadLine
+Import-Module posh-git
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
@@ -33,6 +34,17 @@ Function prompt
     return "$ " 
 }
 
+#Function prompt 
+#{
+# Write-Host -NoNewLine $env:COMPUTERNAME -ForegroundColor DarkGreen;
+# Write-Host -NoNewLine " MINGW64 " -ForegroundColor DarkMagenta;
+# Write-Host -NoNewLine $(Get-PromptPath) -ForegroundColor DarkYellow;
+#  $branch = git rev-parse --abbrev-ref HEAD;
+#
+#   if($branch){Write-Host -NoNewLine -ForegroundColor Cyan " ($branch)"}
+#   Write-Host -ForegroundColor White ">";
+#    return "$ " 
+#}
 
 ############################################################
 ###############    Functions    ############################
