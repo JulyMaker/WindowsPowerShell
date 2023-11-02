@@ -25,15 +25,31 @@ if (Test-Path($ChocolateyProfile)) {
 #Function prompt { "PS $pwd$" }
 Function prompt 
 {
- Write-Host -NoNewLine "PS ";
- Write-Host -NoNewLine "$pwd" -ForegroundColor DarkGray;
-  $branch = git rev-parse --abbrev-ref HEAD;
+   # $GitPromptSettings.DefaultPromptAbbreviateHomeDirectory = $true
+   # $GitPromptSettings.DefaultPromptAbbreviateGitDirectory = $true
+   # $GitPromptSettings.DefaultPromptPath.ForegroundColor = [ConsoleColor]::DarkGray # 0xFFA500
+   $GitPromptSettings.DefaultPromptSuffix = ""
+   $GitPromptSettings.DefaultPromptPath = ""
+   $GitPromptSettings.BeforeStatus.ForegroundColor = [ConsoleColor]::Green
+   $GitPromptSettings.AfterStatus.ForegroundColor = [ConsoleColor]::Green
 
-   if($branch){Write-Host -NoNewLine -ForegroundColor Green " ($branch)"}
-   Write-Host -ForegroundColor White ">";
-    return "$ " 
+   $branch = git rev-parse --abbrev-ref HEAD;
+
+   $prompt =  Write-Prompt "`nPS "
+   $prompt += Write-Prompt "$pwd" -ForegroundColor ([ConsoleColor]::DarkGray)
+   if($branch){
+    $prompt += Write-Prompt " ($branch)" -ForegroundColor ([ConsoleColor]::Green);
+    $prompt += & $GitPromptScriptBlock
+   }
+
+
+   $prompt += Write-Prompt ">`n" -ForegroundColor ([ConsoleColor]::White)
+   $prompt += "$"
+
+   if ($prompt) { "$prompt " } else { " " } 
 }
 
+#$GitPromptSettings.DefaultPromptAbbreviateHomeDirectory = $true
 #Function prompt 
 #{
 # Write-Host -NoNewLine $env:COMPUTERNAME -ForegroundColor DarkGreen;
