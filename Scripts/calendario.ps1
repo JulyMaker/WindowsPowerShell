@@ -177,7 +177,7 @@ if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27}
 	    Write-Host ''
 
 	    for($count=0; $count -lt 3; $count++){
-	      $DaysOfWeek.Values | % {Write-Host $([string]$('---'.PadLeft($PL,' ').Padright($PR,' '))) -NoNewLine -BackgroundColor     Black -ForegroundColor DarkCyan}
+	      $DaysOfWeek.Values | % {Write-Host $([string]$('---'.PadLeft($PL,' ').Padright($PR,' '))) -NoNewLine -BackgroundColor Black -ForegroundColor DarkCyan}
 	      Write-Host ($esp) -NoNewLine -ForegroundColor White
 	    }
 	    Write-Host ''
@@ -209,7 +209,7 @@ if($YearNumber -eq 2018){ $vacacionesPorAnyo = 27}
  		Write-Host ''
 	 }
 
-<# cuentaAtrasCoche #> 
+<# Dias pendientes #> 
 
 if ($isVacaciones)
 {
