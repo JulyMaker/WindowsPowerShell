@@ -1,4 +1,4 @@
-############## Capturas de pantalla partidas ######################3
+############## Capturas de pantalla partidas ######################
 
 [Reflection.Assembly]::LoadWithPartialName("System.Drawing")
 function screenshot([Drawing.Rectangle]$bounds, $path)
