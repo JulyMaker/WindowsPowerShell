@@ -133,7 +133,7 @@ Function papyrus
       papyrus
     #> 
 
-  &"E:\papyrus\Papyrus\papyrus.exe" -vm "$env:ProgramFiles\Java\jdk-17\bin\server\jvm.dll" -i "E:\papyrus\papyrus-data-model-master"
+  &"E:\papyrus\Papyrus\papyrus.exe" -vm "$env:ProgramFiles\Java\jdk-21\bin\server\jvm.dll" -i "E:\papyrus\papyrus-data-model-master"
 }
 
 Function compilar
