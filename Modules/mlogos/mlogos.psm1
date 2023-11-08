@@ -1,5 +1,15 @@
 ####### MODULO DE LOGOS #######
 
+# logo0= ojos
+# logo1= batman
+# logo2= shadow gate
+# logo3= july admin
+# logo4= XFlow
+# logo5= unity / unity background
+# logo6=
+# logo7=
+# logo8=
+
 Function logo0
 {
   <#
@@ -192,7 +202,7 @@ Function logoRandom
     .SYNOPSIS
      Selecciona un logo random
     .DESCRIPTION 
-      Selecciona un logo random de entre la lista de 5
+      Selecciona un logo random de entre la lista de 6
     .EXAMPLE 
      logoRandom
   #> 
