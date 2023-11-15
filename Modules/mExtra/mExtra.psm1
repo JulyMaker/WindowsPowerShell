@@ -147,7 +147,23 @@ Function trf {
   ((Get-Content -path $file) -replace $from, $to) | Set-Content -Path $file
 }
 
+Function linkSimbolico {
+   <#
+    .SYNOPSIS
+      Crea un link simbolico a una ruta
+    .DESCRIPTION 
+      Crea un link simbolico de la ruta 1 a la ruta 2
+    
+    .EXAMPLE 
+      linkSimbolico $path1 $path2  
+   #> 
+
+  PARAM ([Parameter(Mandatory=$true)]$path1, [Parameter(Mandatory=$true)]$path2)
+  
+  New-Item -ItemType SymbolicLink -Path $path1 -Target $path2
+}
 
 
-Export-ModuleMember -function  cuentaAtras, cuenta, GetInicio, shader, trf
+
+Export-ModuleMember -function  cuentaAtras, cuenta, GetInicio, shader, trf, linkSimbolico
 
