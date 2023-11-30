@@ -91,9 +91,10 @@ Function dumpbin{	cd "$env:ProgramFiles (x86)\Microsoft Visual Studio 14.0\VC\bi
 Function nano { PARAM($File) bash -c "nano $File" }
 Function hibernar { &"$env:windir\System32\rundll32.exe" powrprof.dll,SetSuspendState Hibernate }
 Function killer {ps msiexec| Select-Object id |  %{kill -id $_.Id}; ps winsdksetup| Select-Object id |  %{kill -id $_.Id}; ps adksetup| Select-Object id |  %{kill -id $_.Id}}
+Function repo{ cd "E:\personal\Repos\AdventOfCode\2023\build"}
 
 Function historial {sublime (Get-PSReadLineOption | select -ExpandProperty HistorySavePath)}
-
+Function cmakeVS {cmake  .. -G "Visual Studio 16 2019"}          
 
 ############################################################
 #################    Alias    ##############################
