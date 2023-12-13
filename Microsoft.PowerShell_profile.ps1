@@ -95,6 +95,8 @@ Function repo{ cd "E:\personal\Repos\AdventOfCode\2023\build"}
 
 Function historial {sublime (Get-PSReadLineOption | select -ExpandProperty HistorySavePath)}
 Function cmakeVS {cmake  .. -G "Visual Studio 16 2019"}          
+Function pingDNS { ping july.myddns.me }
+Function openDir { PARAM($dir=".") explorer.exe $dir}            
 
 ############################################################
 #################    Alias    ##############################
