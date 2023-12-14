@@ -793,9 +793,11 @@ Function grepc
 
   PARAM($Pattern, [String]$ForegroundColor = 'Red', [String]$BackgroundColor = 'DarkMagenta', [Switch]$CaseSensitive, [Switch]$NotMatch)
 
- ls -r -i * | where fullname -notlike *.git* | Select-String $Pattern | Select-ColorString $Pattern -ForegroundColor:$ForegroundColor -BackgroundColor:$BackgroundColor -CaseSensitive:$CaseSensitive -NotMatch:$NotMatch
+ $notlikes = @(".git", ".pdb", ".ilk", ".obj", ".lib")
+ ls -r -i * | Where-Object{ $notlikes -notcontains $_.Extension} | Select-String $Pattern | Select-ColorString $Pattern -ForegroundColor:$ForegroundColor -BackgroundColor:$BackgroundColor -CaseSensitive:$CaseSensitive -NotMatch:$NotMatch
 
 }
+
 
 Export-ModuleMember -function lsGetColorAndSize, lsGetColorAndSizeRecursive, coloresPosibles, getDirSizeRecursive, resetShellColors, initShellColors, colores, Test-ConsoleColor, Export-ConsoleColor, Import-ConsoleColor, Select-ColorString, grepc -Alias lsa,lsr,tam
 
