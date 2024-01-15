@@ -117,6 +117,7 @@ set-alias sz                "$env:ProgramFiles\7-Zip\7z.exe"
 set-alias slicer            "$env:ProgramFiles\slicer\Slic3r.exe"
 set-alias repetier          "$env:ProgramFiles\Repetier-Host\RepetierHost.exe"
 set-alias cmakes            "$env:ProgramFiles\CMake\bin\cmake.exe"  
+set-alias pyt               "C:\python\python.exe"
 
 
 ############################################################
@@ -150,7 +151,7 @@ Function inicio{
 
 ############################################################
 
-inicio
+#inicio
 
 
 ############################################################

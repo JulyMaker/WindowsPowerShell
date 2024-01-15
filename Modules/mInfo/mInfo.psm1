@@ -570,5 +570,34 @@ Function visualizacion
   Write-Host ""
 }
 
+##########################################
+############### EMBALSES #################
+##########################################
+
+Function embalses{
+    <#  
+    .SYNOPSIS  
+       Da datos de embalses con script python
+    .DESCRIPTION 
+       Da datos de embalses con script python por defecto Madrid
+    .EXAMPLE 
+      embalses
+    .EXAMPLE 
+      embalses $url
+    #>
+
+  PARAM( $url="")
+
+  $script = ([system.io.fileinfo]$profile).DirectoryName + "\pythonScripts\embalses.py"
+  
+  if (-not $url)
+  {
+    pyt $script
+    return
+  }
+
+  pyt $script --url $url
+}
+
 Export-ModuleMember -function * -Alias *
 
