@@ -791,7 +791,7 @@ Function grepc
       grepc "palabra" 
    #> 
 
-  PARAM($Pattern, [String]$ForegroundColor = 'Red', [String]$BackgroundColor = 'DarkMagenta', [Switch]$CaseSensitive, [Switch]$NotMatch)
+  PARAM($Pattern, [String]$ForegroundColor = 'Red', [String]$BackgroundColor = 'DarkGray', [Switch]$CaseSensitive, [Switch]$NotMatch)
 
  $notlikes = @(".git", ".pdb", ".ilk", ".obj", ".lib")
  ls -r -i * | Where-Object{ $notlikes -notcontains $_.Extension} | Select-String $Pattern | Select-ColorString $Pattern -ForegroundColor:$ForegroundColor -BackgroundColor:$BackgroundColor -CaseSensitive:$CaseSensitive -NotMatch:$NotMatch
