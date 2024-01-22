@@ -584,19 +584,29 @@ Function embalses{
       embalses
     .EXAMPLE 
       embalses $url
+    .EXAMPLE 
+      embalses $provincia
     #>
 
-  PARAM( $url="")
+  PARAM( $url="", $p="")
 
   $script = ([system.io.fileinfo]$profile).DirectoryName + "\pythonScripts\embalses.py"
   
-  if (-not $url)
+  if (-not $url -and -not $p)
   {
     pyt $script
     return
   }
 
-  pyt $script --url $url
+  if(-not $p)
+  {
+    pyt $script --url $url
+  }
+  
+  if(-not $url)
+  {
+    pyt $script --provincia $p
+  }
 }
 
 Export-ModuleMember -function * -Alias *
