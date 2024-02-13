@@ -406,6 +406,13 @@ Function scripts{
    {
      Write-Host ("  ${name}")  -foregroundcolor "Cyan"
    }  
+
+   Write-Host "pythonScripts" -foreGroundColor "Yellow" 
+   $scripts = ls $dir/pythonScripts *.py | %{$_.BaseName}
+   ForEach ($name in $scripts)
+   {
+     Write-Host ("  ${name}")  -foregroundcolor "Cyan"
+   }  
 }
 
 Function ayuda{  
