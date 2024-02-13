@@ -44,7 +44,7 @@ Function prompt
 
 
    $prompt += Write-Prompt ">`n" -ForegroundColor ([ConsoleColor]::White)
-   $prompt += "$"
+   $prompt += Write-Prompt "$" -ForegroundColor ([ConsoleColor]::DarkYellow)
 
    if ($prompt) { "$prompt " } else { " " } 
 }
