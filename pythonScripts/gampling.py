@@ -53,8 +53,9 @@ def report():
         print(f"Error al realizar la solicitud. Código de estado: {response.status_code}")
 
 
-if __name__ == '__main__':
-        
-    schedule.every().hour.at(":01").do(report)
+if __name__ == '__main__':    
+    report()
+    schedule.every(30).minutes.do(report)   
+    # schedule.every().hour.at(":01").do(report)
     while True:
         schedule.run_pending()
