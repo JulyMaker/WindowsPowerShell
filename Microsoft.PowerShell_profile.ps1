@@ -111,6 +111,7 @@ set-alias particiones       Get-partition
 set-alias monitor           resmon
 set-alias licencia          serial
 set-alias cambiarColores    Get-PSReadLineOption
+set-alias rename            Rename-Item
 set-alias sublime           "$env:ProgramFiles\Sublime Text 3\sublime_text.exe"
 set-alias code              "$env:ProgramFiles\Microsoft VS Code\code.exe"
 set-alias sz                "$env:ProgramFiles\7-Zip\7z.exe"
