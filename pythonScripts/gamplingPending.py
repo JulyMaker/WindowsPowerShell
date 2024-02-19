@@ -5,7 +5,6 @@ import schedule
 import time
 from datetime import datetime
 
-
 def bot_send_text(bot_message):
     with open('ids', 'r') as file:
         # Token del bot de Telegram
@@ -45,8 +44,8 @@ def report():
     
             if option_found:
                 # Enviar mensaje de Telegram
-                message = f"¡Alerta! 'Tienda CONFORT 4 pax' está disponible' en {url}."
-                print(message)
+                message = f"¡Alerta! 'Tienda CONFORT' disponible' en {url}."
+                print(f"{message}")
                 test_bot = bot_send_text(message)
             else:
                 print("'Tienda CONFORT 4 pax [SOLDOUT]'")
@@ -54,5 +53,9 @@ def report():
         print(f"Error al realizar la solicitud. Código de estado: {response.status_code}")
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     report()
+    schedule.every(30).minutes.do(report)   
+    # schedule.every().hour.at(":01").do(report)
+    while True:
+        schedule.run_pending()
