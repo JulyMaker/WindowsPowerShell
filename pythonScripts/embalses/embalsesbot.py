@@ -23,11 +23,11 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def embalse(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text_caps = ' '.join(context.args).upper()
-    resultado= subprocess.run(["python", ruta_script, "--provincia", text_caps, "--img"], capture_output=True, text=True)
-    imgUrl= resultado.stdout
-    await context.bot.send_message(chat_id=bot_chatID, text=text_caps)
+    #resultado= subprocess.run(["python", ruta_script, "--provincia", text_caps, "--img"], capture_output=True, text=True)
+    #imgUrl= resultado.stdout
+    #await context.bot.send_message(chat_id=bot_chatID, text=text_caps)
     #await context.bot.send_document(chat_id=bot_chatID, document='graphic.png')
-    await context.bot.send_document(chat_id=bot_chatID, document=imgUrl)
+    #await context.bot.send_document(chat_id=bot_chatID, document=imgUrl)
     subprocess.run(["python", ruta_script, "--provincia", text_caps ])
     
 
