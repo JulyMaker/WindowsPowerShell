@@ -408,7 +408,7 @@ Function scripts{
    }  
 
    Write-Host "pythonScripts" -foreGroundColor "Yellow" 
-   $scripts = ls $dir/pythonScripts *.py | %{$_.BaseName}
+   $scripts = ls -r $dir/pythonScripts *.py | %{$_.BaseName}
    ForEach ($name in $scripts)
    {
      Write-Host ("  ${name}")  -foregroundcolor "Cyan"
@@ -597,7 +597,7 @@ Function embalses{
 
   PARAM( $url="", $p="")
 
-  $script = ([system.io.fileinfo]$profile).DirectoryName + "\pythonScripts\embalses.py"
+  $script = ([system.io.fileinfo]$profile).DirectoryName + "\pythonScripts\embalses\embalses.py"
   
   if (-not $url -and -not $p)
   {
