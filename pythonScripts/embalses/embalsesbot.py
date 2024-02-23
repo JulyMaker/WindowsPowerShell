@@ -39,12 +39,14 @@ if __name__ == '__main__':
 
     pregunta_handler = CommandHandler('pregunta', pregunta)
     embalse_handler = CommandHandler('embalse', embalse)
-    echo_handler  = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
+    embalses_handler = CommandHandler('embalses', embalse)
+    #echo_handler  = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
     unknown_handler = MessageHandler(filters.COMMAND, unknown)
     
     application.add_handler(pregunta_handler)
     application.add_handler(embalse_handler)
-    application.add_handler(echo_handler)
+    application.add_handler(embalses_handler)
+    #application.add_handler(echo_handler)
     application.add_handler(unknown_handler)
 
     application.run_polling()
