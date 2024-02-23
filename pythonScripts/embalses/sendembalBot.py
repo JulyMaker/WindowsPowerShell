@@ -20,13 +20,13 @@ with open('idsembalses', 'r') as file:
         # ID del chat de Telegram donde deseas enviar el mensaje
         bot_chatID = file.readline().strip()
 
-def bot_send_text(bot_message):
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&disable_web_page_preview=true&parse_mode=Markdown&text=' + bot_message
+def bot_send_text(message):
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&disable_web_page_preview=true&parse_mode=Markdown&text=' + message
     response = requests.get(send_text)
     return response
 
 def bot_send_imge(urlImage, message):
-    send_photo= 'https://api.telegram.org/bot'+ bot_token + '/sendPhoto?chat_id='+ bot_chatID +'&parse_mode=Markdown&caption='+message+'&photo=' + urlImage
+    send_photo= 'https://api.telegram.org/bot'+ bot_token + '/sendPhoto?chat_id='+ bot_chatID +'&photo='+ urlImage +'&parse_mode=Markdown&caption='+ message
     response = requests.get(send_photo)
     return response
 
