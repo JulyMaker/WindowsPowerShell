@@ -1,6 +1,7 @@
 ####### MODULO DE LS A COLOR #######
 
 Set-Alias lsa lsGetColorAndSize
+Set-Alias ll  lsGetColorAndSize
 Set-Alias lsr lsGetColorAndSizeRecursive
 Set-Alias tam getDirSizeRecursive
 
@@ -799,7 +800,7 @@ Function grepc
 }
 
 
-Export-ModuleMember -function lsGetColorAndSize, lsGetColorAndSizeRecursive, coloresPosibles, getDirSizeRecursive, resetShellColors, initShellColors, colores, Test-ConsoleColor, Export-ConsoleColor, Import-ConsoleColor, Select-ColorString, grepc -Alias lsa,lsr,tam
+Export-ModuleMember -function lsGetColorAndSize, lsGetColorAndSizeRecursive, coloresPosibles, getDirSizeRecursive, resetShellColors, initShellColors, colores, Test-ConsoleColor, Export-ConsoleColor, Import-ConsoleColor, Select-ColorString, grepc -Alias lsa,ll,lsr,tam
 
 #############  COLORS ###########
 # Black        
