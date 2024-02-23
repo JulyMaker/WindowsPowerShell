@@ -10,9 +10,10 @@ from datetime import datetime
 
 ###################################################
 #                                                 #
-# MAPA DE EMBALSES                                #
+#       TELEGRAM BOT                              #
 #                                                 #
 ###################################################
+
 with open('idsembalses', 'r') as file:
         # Token del bot de Telegram
         bot_token = file.readline().strip()
@@ -20,14 +21,20 @@ with open('idsembalses', 'r') as file:
         bot_chatID = file.readline().strip()
 
 def bot_send_text(bot_message):
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&disable_web_page_preview=true&parse_mode=Markdown&text=' + bot_message
     response = requests.get(send_text)
     return response
 
-def bot_send_imge(urlImage):
-    send_photo= 'https://api.telegram.org/bot'+ bot_token + '/sendPhoto?chat_id='+ bot_chatID +'&photo=' + urlImage
+def bot_send_imge(urlImage, message):
+    send_photo= 'https://api.telegram.org/bot'+ bot_token + '/sendPhoto?chat_id='+ bot_chatID +'&parse_mode=Markdown&caption='+message+'&photo=' + urlImage
     response = requests.get(send_photo)
     return response
+
+###################################################
+#                                                 #
+# MAPA DE EMBALSES                                #
+#                                                 #
+###################################################
 
 def provinciaCodeAndName(urlName):
     try:
@@ -70,7 +77,6 @@ def provinciaMap(url):
 #                                                 #
 ###################################################
 
-#https://www.embalses.net/provincia-31-cuenca.html
 parser = argparse.ArgumentParser(description='Scrape data from embalses.net.')
 parser.add_argument('--url', help='URL to scrape')
 parser.add_argument('--provincia', help='provincia name')
@@ -125,7 +131,6 @@ def fetch_embalses():
         #    with open("graphic.png", "wb") as file:
         #        file.write(imageResponse.content)
     
-    # Busca todos los elementos con la clase 'FilaSeccion'
     fila_secciones = soup.select('.FilaSeccion')
 
     for fila_seccion in fila_secciones:
@@ -170,24 +175,18 @@ if __name__ == '__main__':
     print(f"Misma Semana (2023):         {result['misma_semana_2023']:>3} hm³ {result.get('misma_semana_2023_per', ''):>5} % {color} {diffStr:>3} % {CRESET}")
     print(f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']:>3} hm³ {result.get('misma_semana_media_10_per', ''):>5} % {color2} {diffStr2:>3} % {CRESET}")
 
-    # Enviar el mensaje a Telegram
+    # Send Telegram message
 
-    #message2 = f"{url}\n"
-    #message =f"{fecha}  {result['agua_embalsada']:>3} hm³ {result.get('agua_embalsada_per', ''):>5} %\n"
-    #message +=f"Variacion semana Anterior:         {result['variacion_semana_anterior']:>3} hm³  {result.get('variacion_semana_anterior_per', ''):>5} %\n"
-    #message +=f"Misma Semana (2023):                 {result['misma_semana_2023']:>3} hm³ {result.get('misma_semana_2023_per', ''):>5} % {diffStr:>3} %\n"
-    #message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']:>3} hm³ {result.get('misma_semana_media_10_per', ''):>5} % {diffStr2:>3} %\n"
-    
-    message  =f"{provincia.upper()}:\n"
+    message  =f"{provincia.upper()} \n"
     message +=f"```cpp\n"
     message +=f"{fecha} {result['agua_embalsada']} hm³ {result.get('agua_embalsada_per', '')}%\n"
     message +=f"Variacion semana Anterior:   {result['variacion_semana_anterior']:>3} hm³ {result['variacion_semana_anterior_per']:>5}%\n"
     message +=f"Misma Semana (2023):         {result['misma_semana_2023']} hm³ {result.get('misma_semana_2023_per', '')}% {diffStr:>5}%\n"
-    message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']} hm³ {result.get('misma_semana_media_10_per', '')}% {diffStr2:>5}%```"
-    message2 =f"{url}\n"
+    message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']} hm³ {result.get('misma_semana_media_10_per', '')}% {diffStr2:>5}%"
+    message +=f"```"
+    message +=f"{url}"
 
     #print(message)
 
-    test_bot = bot_send_text(message)
-    test_bot = bot_send_imge(imgUrl)
-    test_bot = bot_send_text(message2)
+    #test_bot = bot_send_text(message)
+    test_bot = bot_send_imge(imgUrl,message)
