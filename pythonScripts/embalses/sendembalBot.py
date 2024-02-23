@@ -24,7 +24,7 @@ def bot_send_text(bot_message):
     response = requests.get(send_text)
     return response
 
-def bot_send_img(urlImage):
+def bot_send_imge(urlImage):
     send_photo= 'https://api.telegram.org/bot'+ bot_token + '/sendPhoto?chat_id='+ bot_chatID +'&photo=' + urlImage
     response = requests.get(send_photo)
     return response
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     diffStr = "{:.2f}".format(diff)
     color= BGREEN if diff >= 0 else BHRED
 
-    diff2= float(result.get('agua_embalsada_per', '')) - float(result.get('misma_semana_media_10_per', ''))
+    diff2= float(result['agua_embalsada_per']) - float(result['misma_semana_media_10_per'])
     diffStr2 = "{:.2f}".format(diff2)
     color2= BGREEN if diff2 >= 0 else BHRED
 
@@ -172,14 +172,22 @@ if __name__ == '__main__':
 
     # Enviar el mensaje a Telegram
 
-    message2 = f"{url}\n"
-    message =f"{fecha}  {result['agua_embalsada']:>3} hm³ {result.get('agua_embalsada_per', ''):>5} %\n"
-    message +=f"Variacion semana Anterior:         {result['variacion_semana_anterior']:>3} hm³  {result.get('variacion_semana_anterior_per', ''):>5} %\n"
-    message +=f"Misma Semana (2023):                 {result['misma_semana_2023']:>3} hm³ {result.get('misma_semana_2023_per', ''):>5} % {diffStr:>3} %\n"
-    message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']:>3} hm³ {result.get('misma_semana_media_10_per', ''):>5} % {diffStr2:>3} %\n"
+    #message2 = f"{url}\n"
+    #message =f"{fecha}  {result['agua_embalsada']:>3} hm³ {result.get('agua_embalsada_per', ''):>5} %\n"
+    #message +=f"Variacion semana Anterior:         {result['variacion_semana_anterior']:>3} hm³  {result.get('variacion_semana_anterior_per', ''):>5} %\n"
+    #message +=f"Misma Semana (2023):                 {result['misma_semana_2023']:>3} hm³ {result.get('misma_semana_2023_per', ''):>5} % {diffStr:>3} %\n"
+    #message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']:>3} hm³ {result.get('misma_semana_media_10_per', ''):>5} % {diffStr2:>3} %\n"
+    
+    message  =f"{provincia.upper()}:\n"
+    message +=f"```cpp\n"
+    message +=f"{fecha} {result['agua_embalsada']} hm³ {result.get('agua_embalsada_per', '')}%\n"
+    message +=f"Variacion semana Anterior:   {result['variacion_semana_anterior']:>3} hm³ {result['variacion_semana_anterior_per']:>5}%\n"
+    message +=f"Misma Semana (2023):         {result['misma_semana_2023']} hm³ {result.get('misma_semana_2023_per', '')}% {diffStr:>5}%\n"
+    message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']} hm³ {result.get('misma_semana_media_10_per', '')}% {diffStr2:>5}%```"
+    message2 =f"{url}\n"
+
     #print(message)
 
-    test_bot = bot_send_text(provincia.upper())
     test_bot = bot_send_text(message)
-    test_bot = bot_send_img(imgUrl)
+    test_bot = bot_send_imge(imgUrl)
     test_bot = bot_send_text(message2)
