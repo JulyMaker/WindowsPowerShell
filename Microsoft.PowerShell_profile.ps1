@@ -97,6 +97,9 @@ Function historial {sublime (Get-PSReadLineOption | select -ExpandProperty Histo
 Function cmakeVS {cmake  .. -G "Visual Studio 16 2019"}          
 Function pingDNS { ping july.myddns.me }
 Function openDir { PARAM($dir=".") explorer.exe $dir}            
+Function hosts{ cat "$env:windir\System32\drivers\etc\hosts"}
+Function pwdhosts{ echo "$env:windir\System32\drivers\etc\hosts"}
+Function addhosts { PARAM($File) Add-Content -Path $env:windir\System32\drivers\etc\hosts -Value $File }
 
 ############################################################
 #################    Alias    ##############################
@@ -119,7 +122,6 @@ set-alias slicer            "$env:ProgramFiles\slicer\Slic3r.exe"
 set-alias repetier          "$env:ProgramFiles\Repetier-Host\RepetierHost.exe"
 set-alias cmakes            "$env:ProgramFiles\CMake\bin\cmake.exe"  
 set-alias pyt               "C:\python\python.exe"
-
 
 ############################################################
 #################    Admin    ##############################
