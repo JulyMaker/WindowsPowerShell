@@ -14,10 +14,30 @@ Function houseLan
     
     .EXAMPLE 
       houseLan
+    .EXAMPLE 
+      houseLan -c
     #> 
+    param(
+        [switch]$c
+    )
+
+    Write-Host "*****************"
+    Write-Host "****** IPS ******"
+    Write-Host "*****************"
+    Write-Host
 
     nmap -sn 192.168.1.0/24 -oG -
-    nmap -sn 192.168.1.0/24
+    
+    if($c)
+    {
+      Write-Host
+      Write-Host "**********************"
+      Write-Host "****** Complete ******"
+      Write-Host "**********************"
+      Write-Host
+
+      nmap -sn 192.168.1.0/24  
+    } 
 }
 
 Function inventario{
