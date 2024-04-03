@@ -39,6 +39,10 @@ def provinciaMap(url):
             if codigo is not None and nombre is not None:
                 maProvincias[nombre.lower()] = codigo
     
+        if "ciudad" in maProvincias:
+            maProvincias["ciudadreal"] = maProvincias["ciudad"]
+            maProvincias["ciudad-real"] = maProvincias["ciudad"]
+
         return maProvincias
     except requests.exceptions.RequestException as e:
         print(f"No se pudo obtener la página: {e}")
