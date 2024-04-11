@@ -219,6 +219,31 @@ Function seguridad
 }
 
 
+#************************ Screen Info******************************#
+
+Function screensSize
+{
+  Add-Type -AssemblyName System.Windows.Forms
+  $screens = [System.Windows.Forms.Screen]::AllScreens
+
+  $output = @()
+    ForEach($screen in $screens)
+    {
+        $width = $screen.Bounds.Width
+        $height = $screen.Bounds.Height
+
+        $output += [PSCustomObject]@{
+            "Nombre del monitor" = $screen.DeviceName
+            "Ancho de pantalla (px)" = $width
+            "Altura de pantalla (px)" = $height
+        }
+    }
+
+    $output | Format-Table -AutoSize
+}
+
+
+
 ##########################################
 ########### POWERSHELL ###################
 ##########################################
