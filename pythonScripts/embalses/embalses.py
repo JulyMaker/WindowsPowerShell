@@ -101,12 +101,12 @@ def fetch_embalses():
     for fila_seccion in fila_secciones:
         campo = fila_seccion.select_one('.Campo').text.strip()
         resultados = fila_seccion.select('.Resultado')
-        
+        #print(campo)
         if "Agua embalsada" in campo:
             r['agua_embalsada'] = resultados[0].text.strip()
             r['agua_embalsada_per'] = resultados[1].text.strip()
             fecha = campo
-        elif "Variacion semana Anterior" in campo:
+        elif "VariaciÃ³n semana Anterior:" in campo:
             r['variacion_semana_anterior'] = resultados[0].text.strip()
             r['variacion_semana_anterior_per'] = resultados[1].text.strip()
         elif "Misma Semana (2023)" in campo:
