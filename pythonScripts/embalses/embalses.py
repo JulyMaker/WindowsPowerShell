@@ -118,7 +118,18 @@ def fetch_embalses():
 
     return r
 
-result = fetch_embalses()
+def check_and_fetch():
+    required_fields = ['agua_embalsada', 'agua_embalsada_per', 'variacion_semana_anterior', 'variacion_semana_anterior_per', 'misma_semana_2023', 'misma_semana_2023_per', 'misma_semana_media_10', 'misma_semana_media_10_per']
+    result = fetch_embalses()
+
+    while result is None or not all(field in result for field in required_fields):
+        print("Faltan datos, reintentando en 10 segundos...")
+        time.sleep(10)
+        result = fetch_embalses()
+
+    return result
+    
+result = check_and_fetch()
 
 # ANSI codes in PowerShell
 BHRED  = '\x1b[1;91m'
