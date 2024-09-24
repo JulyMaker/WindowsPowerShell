@@ -6,7 +6,7 @@ import re
 from telegram import Bot
 import schedule
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 ###################################################
 #                                                 #
@@ -153,6 +153,17 @@ def fetch_embalses():
 
     return r
 
+def extract_date_from_string(fecha_str):
+    start_idx = fecha_str.find('(')
+    end_idx = fecha_str.find(')')
+    if start_idx != -1 and end_idx != -1:
+        fecha_str = fecha_str[start_idx+1:end_idx]
+        try:
+            return datetime.strptime(fecha_str, "%d-%m-%Y")
+        except ValueError:
+            print(f"Error al convertir la fecha: {fecha_str}")
+    return None
+
 def check_and_fetch():
     required_fields = ['agua_embalsada', 'agua_embalsada_per', 'variacion_semana_anterior', 'variacion_semana_anterior_per', 'misma_semana_2023', 'misma_semana_2023_per', 'misma_semana_media_10', 'misma_semana_media_10_per']
     result = fetch_embalses()
@@ -161,6 +172,15 @@ def check_and_fetch():
         print("Faltan datos, reintentando en 10 segundos...")
         time.sleep(10)
         result = fetch_embalses()
+
+    print(fecha)
+    fecha_obj = extract_date_from_string(fecha)
+    two_days_ago = datetime.now() - timedelta(days=2)
+
+    if fecha_obj and fecha_obj < two_days_ago:
+        print("La fecha es de la semana anterior. Reintentando en 1 hora...")
+        time.sleep(3600)
+        return check_and_fetch()
 
     return result
     
