@@ -181,7 +181,45 @@ Function common
   Write-Host "conan create . xflow_common/<version>@xflow/stable -s build_type=Release --build missing"
 }
 
+Function guide
+{
+  # Leer la ruta remota desde el archivo de configuración
+  $pathFile = "$env:USERPROFILE\Documents\WindowsPowerShell\Modules\mXFlow\ruta.txt"
+  if (-not (Test-Path $pathFile)) {
+      Write-Host "Archivo de configuración no encontrado. Crearlo con la ruta remota." -ForegroundColor Red
+      return
+  }
+
+  # Enlace de descarga y la carpeta de destino
+  $remoteFolder = Get-Content -Path $pathFile
+  $userProfile = $env:USERPROFILE
+  $localFolder = "$env:USERPROFILE\Desktop\doc"  
+  
+  if (-not (Test-Path $localFolder)) {
+      New-Item -Path $localFolder -ItemType Directory
+  }
+  
+  Write-Host "Copy..."
+  # Copiar
+  Copy-Item -Path $remoteFolder -Destination $localFolder -Recurse -Force
+  Rename-Item -Path "$localFolder\XFlow-latest-doc" -NewName "userguide"
+
+  Write-Host "Compressing..."
+  # Rutas
+  $tarFile = "$localFolder\userguide.tar"
+  $compressedFile = "$localFolder\userguide.tar.xz"
+  
+  # .tar.xz usando 7-Zip
+  & sz a -ttar $tarFile "$localFolder\*"
+  & sz a -txz $compressedFile $tarFile
+  
+  Write-Host "Remove tar file..."
+  Remove-Item $tarFile
+  
+  Write-Host "Archivo comprimido en: $compressedFile. Copiar a Artifactory generic-local\installer\userguide.tar.xz"
+}
+
 Function gui { cd E:\git\xflowlegacy}
 Function steps { cd E:\git\xflowlegacy\common\win_compilation\steps}
 
-Export-ModuleMember -function conanenvironment, xflowCompile, fmkInit, traduccion, papyrus, compilar, gui, steps, common
+Export-ModuleMember -function conanenvironment, xflowCompile, fmkInit, traduccion, papyrus, compilar, gui, steps, common, guide
