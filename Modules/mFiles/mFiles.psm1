@@ -81,20 +81,36 @@ Function separatedFiles{
     .DESCRIPTION 
        Separar ficheros en carpetas por fecha con script python
     .EXAMPLE 
-      separatedFiles $path $moveVideo
+      separatedFiles $job $path $moveVideo
     #>
 
-  PARAM( $path=".", $moveVideo= $true)
+  PARAM( $job= $false, $path=".", $moveVideo= $true)
 
   $script = ([system.io.fileinfo]$profile).DirectoryName + "\Modules\mFiles\separatedFiles2.py"
   
   if (-not $moveVideo)
   {
-    python $script $path False
+    if($job)
+    {
+      pyt $script $path False
+    }
+    else
+    {
+      python $script $path False
+    }
+    
     return
   }
 
-  python $script $path
+  if($job)
+  {
+    pyt $script $path
+  }
+  else
+  {
+    python $script $path
+  }
+  
 }
 
 
