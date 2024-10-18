@@ -23,10 +23,6 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def cambio(update: Update, context: ContextTypes.DEFAULT_TYPE):    
     args = context.args
-
-    if len(args) < 2:
-        await context.bot.send_message(chat_id=bot_chatID, text="Por favor, introduce moneda1, moneda 2 y treshold.")
-        return
     
     money1 = args[0] if len(args) > 0 else "EUR"
     money2 = args[1] if len(args) > 1 else "USD"
@@ -35,7 +31,7 @@ async def cambio(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if money1 not in valid_currencies or money2 not in valid_currencies:
         await context.bot.send_message(chat_id=bot_chatID, text=f"Error: {money1} o {money2} no son códigos de moneda válidos.")
         return
-        
+
     subprocess.run(["python", ruta_script, "--from_currency", money1, "--to_currency", money2, "--threshold", treshold])
 
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
