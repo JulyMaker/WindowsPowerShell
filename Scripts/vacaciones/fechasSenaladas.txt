@@ -84,6 +84,6 @@ Junio
 Julio
 Agosto
 Septiembre 30
-Octubre 1 2 3 4
+Octubre 1 2 3 4 21 22
 Noviembre
 Diciembre
