@@ -99,7 +99,7 @@ Junio
 Julio 23
 Agosto 9
 Septiembre
-Octubre
+Octubre 19
 Noviembre 23
 Diciembre
 
@@ -114,6 +114,6 @@ Junio
 Julio 23
 Agosto 9
 Septiembre
-Octubre
+Octubre 19
 Noviembre 23
 Diciembre
