@@ -155,6 +155,7 @@ Function inicio{
 
 ############################################################
 
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 inicio
 
 

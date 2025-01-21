@@ -103,6 +103,8 @@ def fetch_embalses():
     global fecha, imgUrl
     r = {}
     cnt = 0
+    last_year = datetime.now().year - 1
+
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -144,9 +146,10 @@ def fetch_embalses():
         elif "VariaciÃ³n semana Anterior" in campo:
             r['variacion_semana_anterior'] = resultados[0].text.strip()
             r['variacion_semana_anterior_per'] = resultados[1].text.strip()
-        elif "Misma Semana (2023)" in campo:
-            r['misma_semana_2023'] = resultados[0].text.strip()
-            r['misma_semana_2023_per'] = resultados[1].text.strip()
+        elif f"Misma Semana ({last_year})" in campo:
+            print("Pase por aqui")
+            r[f'misma_semana_{last_year}'] = resultados[0].text.strip()
+            r[f'misma_semana_{last_year}_per'] = resultados[1].text.strip()
         elif "Misma Semana (Med. 10 AÃ±os)" in campo:
             r['misma_semana_media_10'] = resultados[0].text.strip()
             r['misma_semana_media_10_per'] = resultados[1].text.strip()
@@ -165,34 +168,51 @@ def extract_date_from_string(fecha_str):
     return None
 
 def check_and_fetch():
-    required_fields = ['agua_embalsada', 'agua_embalsada_per', 'variacion_semana_anterior', 'variacion_semana_anterior_per', 'misma_semana_2023', 'misma_semana_2023_per', 'misma_semana_media_10', 'misma_semana_media_10_per']
-    result = fetch_embalses()
+    required_fields = ['agua_embalsada', 'agua_embalsada_per', 'variacion_semana_anterior', 'variacion_semana_anterior_per', f'misma_semana_{datetime.now().year - 1}', f'misma_semana_{datetime.now().year - 1}_per', 'misma_semana_media_10', 'misma_semana_media_10_per']
+    
+    MAX_RETRIES = 7
+    retries = 0
 
-    while result is None or not all(field in result for field in required_fields):
+    while True:
+      result = fetch_embalses()
+
+      if result is None or not all(field in result for field in required_fields):
         print("Faltan datos, reintentando en 10 segundos...")
         time.sleep(10)
-        result = fetch_embalses()
+        retries += 1
+        if retries >= MAX_RETRIES:
+            raise RuntimeError("Máximo de reintentos alcanzado al obtener datos.")
+        continue
+  
+      print(fecha)
+      fecha_obj = extract_date_from_string(fecha)
+      two_days_ago = datetime.now() - timedelta(days=2)
+  
+      now = datetime.now()
+      start_of_week = now - timedelta(days=now.weekday())
+      start_of_week = start_of_week.replace(hour=0, minute=0, second=0, microsecond=0) # Lunes a las 00:00:00
+      end_of_week = start_of_week + timedelta(days=6, hours=23, minutes=59, seconds=59)  # Domingo a las 23:59:59
 
-    print(fecha)
-    fecha_obj = extract_date_from_string(fecha)
-    two_days_ago = datetime.now() - timedelta(days=2)
-
-    if fecha_obj and fecha_obj < two_days_ago:
-        print("La fecha es de la semana anterior. Reintentando en 1 hora...")
-        time.sleep(3600)
-        return check_and_fetch()
-
-    return result
+      if fecha_obj and not (start_of_week <= fecha_obj <= end_of_week):
+            print("La fecha no está dentro de esta semana. Reintentando en 1 hora...")
+            time.sleep(3600)
+            retries += 1
+            if retries >= MAX_RETRIES:
+                raise RuntimeError("Máximo de reintentos alcanzado al verificar la fecha.")
+            continue
+  
+      return result
     
 if __name__ == '__main__':
     result = check_and_fetch()
+    last_year = datetime.now().year - 1
 
     # ANSI codes in PowerShell
     BHRED  = '\x1b[1;91m'
     BGREEN = '\x1b[1;92m'
     CRESET = '\033[0m'
 
-    diff= float(result.get('agua_embalsada_per', '')) - float(result.get('misma_semana_2023_per', ''))
+    diff= float(result.get('agua_embalsada_per', '')) - float(result.get(f'misma_semana_{last_year}_per', ''))
     diffStr = "{:.2f}".format(diff)
     color= BGREEN if diff >= 0 else BHRED
 
@@ -203,7 +223,7 @@ if __name__ == '__main__':
     print(url)
     print(f"{fecha} {result['agua_embalsada']:>3} hm³ {result.get('agua_embalsada_per', ''):>5} %")
     print(f"Variacion semana Anterior:   {result['variacion_semana_anterior']:>3} hm³ {result.get('variacion_semana_anterior_per', ''):>5} %")
-    print(f"Misma Semana (2023):         {result['misma_semana_2023']:>3} hm³ {result.get('misma_semana_2023_per', ''):>5} % {color} {diffStr:>3} % {CRESET}")
+    print(f"Misma Semana ({last_year}):         {result[f'misma_semana_{last_year}']:>3} hm³ {result.get(f'misma_semana_{last_year}_per', ''):>5} % {color} {diffStr:>3} % {CRESET}")
     print(f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']:>3} hm³ {result.get('misma_semana_media_10_per', ''):>5} % {color2} {diffStr2:>3} % {CRESET}")
 
     # Send Telegram message
@@ -212,7 +232,7 @@ if __name__ == '__main__':
     message +=f"```cpp\n"
     message +=f"{fecha} {result['agua_embalsada']} hm³ {result.get('agua_embalsada_per', '')}%\n"
     message +=f"Variacion semana Anterior:   {result['variacion_semana_anterior']:>3} hm³ {result['variacion_semana_anterior_per']:>5}%\n"
-    message +=f"Misma Semana (2023):         {result['misma_semana_2023']} hm³ {result.get('misma_semana_2023_per', '')}% {diffStr:>5}%\n"
+    message +=f"Misma Semana ({last_year}):         {result[f'misma_semana_{last_year}']} hm³ {result.get(f'misma_semana_{last_year}_per', '')}% {diffStr:>5}%\n"
     message +=f"Misma Semana (Med. 10 Años): {result['misma_semana_media_10']} hm³ {result.get('misma_semana_media_10_per', '')}% {diffStr2:>5}%"
     message +=f"```"
     message +=f"{url}"
