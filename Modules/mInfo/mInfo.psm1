@@ -261,13 +261,17 @@ Function funciones{
       funciones $num
    #>
 
-  PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count - 1)
+  PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count -1)
 
 	$funciones = Get-Module -ListAvailable | select-object Name -first $numModules
+  $myModule  = Get-Module -ListAvailable | Select-Object Name -last 1
+  $funciones = $funciones + $myModule
 
 	ForEach ($item in $funciones)
 	{	
     if($item.Name -eq "ImportExcel"){ continue; }
+    if($item.Name -eq "posh-git"){ continue; }
+    if($item.Name -eq "PSReadLine"){ continue; }
     Write-Host ""
 		$item.Name
 		$func = Get-Command -Module $item.Name | select-object Name
@@ -320,13 +324,15 @@ Function funcDescrip{
    .EXAMPLE 
      funcDescrip $num
   #>
-   PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count-2)
+   PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count-1)
 
   $funciones = Get-Module -ListAvailable | select-object Name -first $numModules
 
   ForEach ($item in $funciones)
   {	
    if($item.Name -eq "ImportExcel"){ continue; }
+   if($item.Name -eq "posh-git"){ continue; }
+    if($item.Name -eq "PSReadLine"){ continue; }
    Write-Host ""
    Write-Host " $($item.Name)" -foregroundcolor "Red"
 
