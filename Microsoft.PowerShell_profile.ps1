@@ -9,7 +9,7 @@ Import-Module mInfo
 Import-Module mFTP
 Import-Module mMouse
 Import-Module mGit
-Import-Module mXFlow
+# Import-Module mXFlow
 Import-Module mNetwork
 Import-Module PSReadLine
 Import-Module posh-git
