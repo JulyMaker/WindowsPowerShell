@@ -2,6 +2,13 @@ import os
 import filecmp
 from pathlib import Path
 
+# Iconos para los mensajes
+ICON_OK = "✅"
+ICON_ERROR = "❌"
+ICON_FILE = "📁"
+ICON_INFO = "⚠️"
+ICON_PROGRESS = "🔄"
+
 def normalizar_ruta(ruta):
     """Normaliza las rutas eliminando barras finales y normalizando separadores"""
     ruta = ruta.rstrip('\\/')
@@ -27,8 +34,8 @@ def comparar_carpetas_contenido(carpeta1, carpeta2, archivo_salida):
     carpeta2 = normalizar_ruta(carpeta2)
     
     with open(archivo_salida, 'w', encoding='utf-8') as f:
-        f.write(f"COMPARACIÓN DE CARPETAS - SOLO DIFERENCIAS\n{'='*40}\n")
-        f.write(f"CARPETA PRINCIPAL: {carpeta1}\n")
+        f.write(f"{ICON_FOLDER} COMPARACIÓN DE CARPETAS - SOLO DIFERENCIAS\n{'='*40}\n")
+        f.write(f"{ICON_FOLDER} CARPETA PRINCIPAL: {carpeta1}\n")
         f.write(f"CARPETA COMPARADA: {carpeta2}\n\n")
         f.write("NOTA: Se ignoran archivos del sistema (Thumbs.db, desktop.ini, etc.)\n\n")
         
@@ -104,7 +111,7 @@ if __name__ == "__main__":
     import sys
     
     if len(sys.argv) != 4:
-        print("Uso: python compara.py <carpeta1> <carpeta2> <archivo_salida>")
+        print(f"{ICON_INFO} Uso: python compara.py <carpeta1> <carpeta2> <archivo_salida>")
         print('Ejemplo: python compara.py "Z:" "E:\\carpeta comparación" resultado.txt')
         sys.exit(1)
     
@@ -115,17 +122,17 @@ if __name__ == "__main__":
     try:
         carpeta1 = normalizar_ruta(carpeta1)
         if not os.path.isdir(carpeta1):
-            print(f"Error: No se encuentra la carpeta {carpeta1}")
+            print(f"{ICON_ERROR} Error: No se encuentra la carpeta {carpeta1}")
             sys.exit(1)
         
         carpeta2 = normalizar_ruta(carpeta2)
         if not os.path.isdir(carpeta2):
-            print(f"Error: No se encuentra la carpeta {carpeta2}")
+            print(f"{ICON_ERROR} Error: No se encuentra la carpeta {carpeta2}")
             sys.exit(1)
         
         comparar_carpetas_contenido(carpeta1, carpeta2, archivo_salida)
-        print(f"Comparación completada. Resultados guardados en {archivo_salida}")
+        print(f"{ICON_OK} Comparación completada. Resultados guardados en {archivo_salida}")
     
     except Exception as e:
-        print(f"Error inesperado: {str(e)}")
+        print(f"{ICON_ERROR} Error inesperado: {str(e)}")
         sys.exit(1)
