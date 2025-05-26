@@ -2,6 +2,7 @@ import os
 import sys
 import colorama
 from colorama import Fore, Back, Style
+from math import pow
 
 # Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
 # Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
@@ -16,10 +17,10 @@ except IndexError:
   sys.exit("Must provide an argunmet.")
 
 dir_size = 0
-fsizedicr = {'Bytes': 1,
-'Kilobytes': float(1) / 1024,
-'Megabytes': float(1) / (1024*1024),
-'Gigabytes': float(1) / (1024*1024*1024)}
+prefixes = ['', 'Kilo', 'Mega', 'Giga']
+fsizedicr = {
+    f'{prefix}bytes'.capitalize(): pow(1024, -i) for i, prefix in enumerate(prefixes)
+}
 
 for(path, dirs, files) in os.walk(dir):
 	for file in files:
