@@ -183,11 +183,11 @@ BHRED  = '\x1b[1;91m'
 BGREEN = '\x1b[1;92m'
 CRESET = '\033[0m'
 
-diff= float(result.get('agua_embalsada_per', '')) - float(result.get(f'misma_semana_{last_year}_per', ''))
+diff= float(result.get('agua_embalsada_per', '').replace(',','.')) - float(result.get(f'misma_semana_{last_year}_per', '').replace(',','.'))
 diffStr = "{:.2f}".format(diff)
 color= BGREEN if diff >= 0 else BHRED
 
-diff2= float(result['agua_embalsada_per']) - float(result['misma_semana_media_10_per'])
+diff2= float(result['agua_embalsada_per'].replace(',','.')) - float(result['misma_semana_media_10_per'].replace(',','.'))
 diffStr2 = "{:.2f}".format(diff2)
 color2= BGREEN if diff2 >= 0 else BHRED
 

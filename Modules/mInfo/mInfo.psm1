@@ -261,7 +261,7 @@ Function funciones{
       funciones $num
    #>
 
-  PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count -1)
+  PARAM([int]$numModules = (modulos | Where{$_.ModuleType -like "Script"}).Count)
 
 	$funciones = Get-Module -ListAvailable | select-object Name -first $numModules
   $myModule  = Get-Module -ListAvailable | Select-Object Name -last 1
