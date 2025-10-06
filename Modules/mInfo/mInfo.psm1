@@ -272,6 +272,8 @@ Function funciones{
     if($item.Name -eq "ImportExcel"){ continue; }
     if($item.Name -eq "posh-git"){ continue; }
     if($item.Name -eq "PSReadLine"){ continue; }
+    if($item.Name -eq "ActiveDirectory"){ continue; }
+
     Write-Host ""
 		$item.Name
 		$func = Get-Command -Module $item.Name | select-object Name
@@ -332,7 +334,9 @@ Function funcDescrip{
   {	
    if($item.Name -eq "ImportExcel"){ continue; }
    if($item.Name -eq "posh-git"){ continue; }
-    if($item.Name -eq "PSReadLine"){ continue; }
+   if($item.Name -eq "PSReadLine"){ continue; }
+   if($item.Name -eq "ActiveDirectory"){ continue; }
+
    Write-Host ""
    Write-Host " $($item.Name)" -foregroundcolor "Red"
 
